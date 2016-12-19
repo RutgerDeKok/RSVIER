@@ -112,6 +112,31 @@ LOCK TABLES `medewerkers` WRITE;
 INSERT INTO `medewerkers` VALUES (1,'Boer','Piet','Baas','Melkweg',10,NULL,'1450AA','Kaasdam','012-456789','administrator'),(2,'Rutger','Kok, de','Proever','Dorpstraat',1,'bis','1449AB','Stremsel','06-34567890','basic');
 /*!40000 ALTER TABLE `medewerkers` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `producten`
+--
+
+DROP TABLE IF EXISTS `producten`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `producten` (
+  `product_id` int(11) NOT NULL,
+  `product_naam` varchar(45) NOT NULL,
+  `product_prijs` float NOT NULL,
+  `product_op_voorraad` int(11) NOT NULL,
+  PRIMARY KEY (`product_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `producten`
+--
+
+LOCK TABLES `producten` WRITE;
+/*!40000 ALTER TABLE `producten` DISABLE KEYS */;
+/*!40000 ALTER TABLE `producten` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -122,4 +147,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-12-18 22:50:53
+-- Dump completed on 2016-12-19  1:36:16
