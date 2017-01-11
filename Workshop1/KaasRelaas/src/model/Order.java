@@ -19,6 +19,9 @@ public class Order {
 	private BigDecimal totaalBedrag;
 	
 	//constructor
+	public Order(){
+	}
+	
 	public Order(int orderId, Date orderDatum, int medewerkerId, int klantId, int productA_Id,
 		int productA_aantal, int productB_Id, int productB_aantal, int productC_Id, 
 		int productC_aantal, BigDecimal totaalBedrag){

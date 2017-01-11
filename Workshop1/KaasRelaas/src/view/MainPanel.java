@@ -14,6 +14,7 @@ public class MainPanel extends JPanel{
 	private static final long serialVersionUID = 1L;
 
 	private OrdersPanel ordersPanel;
+	private KlantenPanel klantenPanel;
 	
 
 	public MainPanel() {
@@ -38,7 +39,7 @@ public class MainPanel extends JPanel{
 		tabbedPane.addTab(" Orders         ", null, ordersPanel, null);
 		
 		
-		KlantenPanel klantenPanel = new KlantenPanel();
+		klantenPanel = new KlantenPanel();
 		tabbedPane.addTab(" Klanten        ", null, klantenPanel, null);
 
 		
@@ -59,11 +60,15 @@ public class MainPanel extends JPanel{
 		add(logoutButton);
 		
 	}
+		
 	
 	public OrdersPanel getOrderPanel(){
 		return ordersPanel;
 	}
 	
+	public KlantenPanel getKlantenPanel(){
+		return klantenPanel;
+	}
 	
 
 }

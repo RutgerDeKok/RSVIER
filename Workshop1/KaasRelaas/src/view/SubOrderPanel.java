@@ -1,9 +1,15 @@
 package view;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
@@ -16,31 +22,32 @@ import javax.swing.SwingConstants;
 public class SubOrderPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-
+	
+	
 	private JComboBox<String> productComboBox;
 	private JTextField prijsTextField;
 	private JTextField aantalTextField;
-	private JTextField totaalTextField;
+	private JTextField subtotaalTextField;
 	private List<String> productOptions;
+	private List<BigDecimal> productPrijzen;
+	private BigDecimal prijs;
+	private NieuweOrderPanel nieuweOrderPanel;
+	
+	
 
-	public SubOrderPanel(List<String> productOptions) {
-//		this.productOptions = productOptions;
-		initialize();
-		setProductOptions(productOptions);
-	}
-	
-	public SubOrderPanel() {
+	public SubOrderPanel(NieuweOrderPanel nieuweOrderPanel) {
+		this.nieuweOrderPanel = nieuweOrderPanel;
 		initialize();
 	}
 	
-	
+		
 	
 
 	private void initialize() {
 
 		GridBagLayout gridBackLayoutSO = new GridBagLayout();
-		gridBackLayoutSO.columnWidths = new int[] { 150, 150, 250, 150, 150, 0 };
-		gridBackLayoutSO.rowHeights = new int[] { 55, 55, 0 };
+		gridBackLayoutSO.columnWidths = new int[] { 120, 150, 250, 150, 120, 20 };
+		gridBackLayoutSO.rowHeights = new int[] { 40, 40, 10, 0 };
 		gridBackLayoutSO.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0 };
 		gridBackLayoutSO.rowWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
 		setLayout(gridBackLayoutSO);
@@ -78,6 +85,7 @@ public class SubOrderPanel extends JPanel {
 		add(prijsLabel, gbc_prijsLabel);
 
 		prijsTextField = new JTextField();
+		prijsTextField.setForeground(new Color(95, 158, 160));
 		prijsTextField.setText("0");
 		prijsTextField.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		prijsTextField.setEditable(false);
@@ -102,6 +110,7 @@ public class SubOrderPanel extends JPanel {
 		aantalTextField = new JTextField();
 		aantalTextField.setToolTipText("Kies heel getal a.u.b.");
 		aantalTextField.setText("0");
+		aantalTextField.setEditable(false);
 		aantalTextField.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		aantalTextField.setColumns(10);
 		GridBagConstraints gbc_aantalTextField = new GridBagConstraints();
@@ -111,7 +120,7 @@ public class SubOrderPanel extends JPanel {
 		gbc_aantalTextField.gridy = 1;
 		add(aantalTextField, gbc_aantalTextField);
 
-		JLabel totaalLabel = new JLabel("Totaal Prijs:  ");
+		JLabel totaalLabel = new JLabel("Sub Totaal:  ");
 		totaalLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		totaalLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		GridBagConstraints gbc_totaalLabel = new GridBagConstraints();
@@ -121,34 +130,95 @@ public class SubOrderPanel extends JPanel {
 		gbc_totaalLabel.gridy = 1;
 		add(totaalLabel, gbc_totaalLabel);
 
-		totaalTextField = new JTextField();
-		totaalTextField.setText("0");
-		totaalTextField.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		totaalTextField.setEditable(false);
-		totaalTextField.setColumns(10);
+		subtotaalTextField = new JTextField();
+		subtotaalTextField.setText("0");
+		subtotaalTextField.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		subtotaalTextField.setEditable(false);
+		subtotaalTextField.setColumns(10);
 		GridBagConstraints gbc_totaalTextField = new GridBagConstraints();
 		gbc_totaalTextField.insets = new Insets(10, 10, 0, 5);
 		gbc_totaalTextField.fill = GridBagConstraints.BOTH;
 		gbc_totaalTextField.gridx = 4;
 		gbc_totaalTextField.gridy = 1;
-		add(totaalTextField, gbc_totaalTextField);
-
+		add(subtotaalTextField, gbc_totaalTextField);
+		
+	
 	}
+	
 
+
+	
+	//add two handlers
+	public void addProductedListeners(){  
+		
+		// handler 1
+		productComboBox.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				
+				aantalTextField.setText("0");
+				subtotaalTextField.setText("0");
+				
+				if(productComboBox.getSelectedIndex()==0) {
+					
+					setPrijs(0);
+					aantalTextField.setEditable(false);
+					
+				}else{ aantalTextField.setEditable(true);
+				
+				int keuze = (int) productComboBox.getSelectedIndex();
+				setPrijs(keuze);
+				
+				}
+				nieuweOrderPanel.SumSubtotalen();
+			}	
+		});
+		
+		// handler 2
+		aantalTextField.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					int aantal = Integer.parseInt(aantalTextField.getText());
+			
+					BigDecimal subtotaal = new BigDecimal(aantal).multiply(prijs);
+					
+					subtotaalTextField.setText(subtotaal.toString());
+
+					
+				} catch (NumberFormatException e1) {
+//					e1.printStackTrace();
+					aantalTextField.setText("0");
+				}finally{
+					nieuweOrderPanel.SumSubtotalen();
+				}			
+			}
+		});
+		
+	} // end addProductedListeners method
+	
+	
 	public void setProductOptions(List<String> options) {
 		productOptions = options;
 		productComboBox.removeAllItems();
+		
 		for (String s : productOptions) {
+			System.out.println(s);
 			productComboBox.addItem(s.toString());
 		}
 	}
-
-	public void setPrijsText(String text) {
-		prijsTextField.setText(text);
+	
+	public void setProductPrijzen(List<BigDecimal> prijzen) {
+		this.productPrijzen = prijzen;
+	}
+	
+	public void setPrijs(int keuzeIndex){
+		prijs = productPrijzen.get(keuzeIndex);
+		prijsTextField.setText(prijs.toString());
+		
 	}
 
+
 	public void setTotaalText(String text) {
-		totaalTextField.setText(text);
+		subtotaalTextField.setText(text);
 	}
 
 	public void setProductOptions() {
@@ -163,4 +233,17 @@ public class SubOrderPanel extends JPanel {
 		return Integer.parseInt(aantalTextField.getText());
 	}
 
+
+	public BigDecimal getSubtotaal(){
+		return new BigDecimal(Double.parseDouble(subtotaalTextField.getText()));
+	}
+	
+	public int getProductIndex(){
+		return productComboBox.getSelectedIndex()-1;
+	}
+	
+
 }
+
+
+

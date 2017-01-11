@@ -1,6 +1,10 @@
 package view;
 
 import java.awt.CardLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+
 import javax.swing.JPanel;
 
 public class OrdersPanel extends JPanel {
@@ -14,7 +18,7 @@ public class OrdersPanel extends JPanel {
 
 	public OrdersPanel(){
 
-		initialize();
+		initialize();	
 	}
 	
 	private void initialize(){
@@ -28,10 +32,20 @@ public class OrdersPanel extends JPanel {
 
 		nieuweOrderPnl = new NieuweOrderPanel();
 		add(nieuweOrderPnl, "NieuweOrderPnl");
+	
 		
 		orderCardLayout.show(this, "overzOrdersPnl");
 	
 	}
+	
+	public void refreshNewOrderPnl(){
+		remove(nieuweOrderPnl);
+		nieuweOrderPnl = new NieuweOrderPanel();
+		add(nieuweOrderPnl, "NieuweOrderPnl");
+		nieuweOrderPnl.addCancelOrderListener(new CancelOrderListener());
+	}
+	
+	
 	
 	public void setOrderCard(String cardString){
 		orderCardLayout.show(this, cardString);
@@ -44,4 +58,17 @@ public class OrdersPanel extends JPanel {
 	public NieuweOrderPanel getNieuweOrderPnl(){
 		return nieuweOrderPnl;
 	}
+	
+
+	
+	public class CancelOrderListener implements ActionListener {
+		
+		public void actionPerformed(ActionEvent e) {
+			System.out.println("cancel button pressed");
+			setOrderCard("overzOrdersPnl");
+			
+		}
+	}
+	
+	
 }

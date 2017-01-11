@@ -21,7 +21,7 @@ public class SimpleTablePanel extends JPanel implements TableCellRenderer {
 	private String[][] data;
 	private String[] columnNames;
 	private int[] columnWidths;
-	private int width = 340;
+	private int width = 360;
 	private int height = 485;
 
 

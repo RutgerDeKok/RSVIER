@@ -17,8 +17,9 @@ public class OrdersToTableCoverter {
 	}
 
 	public String[][] getData(List<Order> ordersList) throws SQLException {
+	
 		int l = ordersList.size();
-		String[][]data = new String [l][6];
+		String[][]data = new String [l][7];
 		 for(int i=0;i<l;i++){
 			 data[i]= convertOrderToRow(ordersList.get(i));
 			 
@@ -29,7 +30,7 @@ public class OrdersToTableCoverter {
 	
 	private String [] convertOrderToRow(Order order) throws SQLException{
 		
-		String [] dataRow = new String [6];
+		String [] dataRow = new String [7];
 		int totaalAantalProd = 0;
 		totaalAantalProd += order.getProductA_aantal();
 		totaalAantalProd += order.getProductB_aantal();
@@ -44,6 +45,7 @@ public class OrdersToTableCoverter {
 		dataRow[3]= klantString;
 		dataRow[4]= Integer.toString(totaalAantalProd);
 		dataRow[5]= order.getTotaalBedrag().toString();
+		dataRow[6]= "-Edit-";
 		
 	
 		return dataRow;

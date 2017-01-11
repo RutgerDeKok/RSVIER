@@ -11,6 +11,7 @@ import java.util.Properties;
 public class Model {
 	
 	private OrderDao orderDao;
+	private ProductDao productDao;
 	private GebruikerDao gebruikerDao;
 	private Connection myConn;
 	
@@ -43,6 +44,7 @@ public class Model {
 			myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/boer_piets_kaashandel",props);
 			
 			orderDao = new OrderDao(myConn);
+			productDao = new ProductDao(myConn);
 			gebruikerDao = new GebruikerDao(myConn);
 			
 		} catch (SQLException e) {
@@ -63,6 +65,10 @@ public class Model {
 	
 	public GebruikerDao getGebruikerDao() {
 		return gebruikerDao;
+	}
+	
+	public ProductDao getProductDao() {
+		return productDao;
 	}
 	
 	public OrderDao getOrderDao() {
