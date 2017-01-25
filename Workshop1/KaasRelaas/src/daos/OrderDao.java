@@ -1,13 +1,15 @@
-package model;
+package daos;
 
-import java.math.BigDecimal;
 import java.sql.Connection;
-import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
+import model.Order;
+import model.Order.OrderBuilder;
 
 public class OrderDao {
 
@@ -56,6 +58,12 @@ public class OrderDao {
 				myRs.moveToInsertRow();
 				
 			}else{
+				String query = "UPDATE bestellingen where order_id = "+order.getOrderId()+" Set product_B_id = ?";
+				PreparedStatement queryStatement = (PreparedStatement)myConn.prepareStatement(query);
+				queryStatement.setNull(1, java.sql.Types.INTEGER);
+				
+
+			
 				myRs = myStmt.executeQuery("select * from bestellingen where order_id = "+order.getOrderId());
 				myRs.first();
 				myRs.updateInt("product_B_id",0);
@@ -107,21 +115,20 @@ public class OrderDao {
 
 
 	private Order convertRowToOrder(ResultSet myRs) throws SQLException {
-
-		int orderId = myRs.getInt("bestelling_id");
-		Date orderDatum = myRs.getDate("datum_bestelling");
-		int medewerkerId = myRs.getInt("medewerker_id");
-		int klantId = myRs.getInt("klant_id");
-		int productA_Id = myRs.getInt("product_A_id");
-		int productA_aantal = myRs.getInt("product_A_aantal");
-		int productB_Id = myRs.getInt("product_B_id");
-		int productB_aantal = myRs.getInt("product_B_aantal");
-		int productC_Id = myRs.getInt("product_C_id");
-		int productC_aantal = myRs.getInt("product_C_aantal");
-		BigDecimal totaalBedrag = myRs.getBigDecimal("totaal_bedrag_best");
-
-		Order tempOrder = new Order(orderId, orderDatum, medewerkerId, klantId, productA_Id, productA_aantal,
-				productB_Id, productB_aantal, productC_Id, productC_aantal, totaalBedrag);
+		
+		Order tempOrder = new Order.OrderBuilder()
+				.orderId		(myRs.getInt("bestelling_id"))
+				.orderDatum		(myRs.getDate("datum_bestelling"))
+				.medewerkerId	(myRs.getInt("medewerker_id"))
+				.klantId		(myRs.getInt("klant_id"))
+				.productA_Id	(myRs.getInt("product_A_id"))
+				.productA_aantal(myRs.getInt("product_A_aantal"))
+				.productB_Id	(myRs.getInt("product_B_id"))
+				.productB_aantal(myRs.getInt("product_B_aantal"))
+				.productC_Id	(myRs.getInt("product_C_id"))
+				.productC_aantal(myRs.getInt("product_C_aantal"))
+				.totaalBedrag	(myRs.getBigDecimal("totaal_bedrag_best"))
+				.build();
 
 		return tempOrder;
 	}

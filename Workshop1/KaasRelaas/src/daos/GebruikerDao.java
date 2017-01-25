@@ -1,4 +1,4 @@
-package model;
+package daos;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -6,6 +6,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
+import model.Gebruiker;
+import model.GebruikerToegang;
+import model.GebruikerType;
 
 public class GebruikerDao {
 
@@ -59,24 +63,23 @@ public class GebruikerDao {
 
 	private Gebruiker convertRowToGebruiker(ResultSet myRs) throws SQLException {
 
-		int gebruikerId = myRs.getInt("gebruiker_id");
-		String gebruikerType = myRs.getString("gebruiker_type");
-		String voornaam = myRs.getString("gebruiker_voornaam");
-		String tussenVoegsel = myRs.getString("gebruiker_tussenvoegsel");
-		String achternaam = myRs.getString("gebruiker_achternaam");
-		String straat = myRs.getString("gebruiker_straat");
-		int huisNummer = myRs.getInt("gebruiker_huisnummer");
-		String huisnrToevoeging = myRs.getString("gebruiker_hn_toevoeging");
-		String postcode = myRs.getString("gebruiker_postcode");
-		String woonplaats = myRs.getString("gebruiker_woonplaats");
-		String phone = myRs.getString("gebruiker_telefoonnr");
-		String gebruikerToegang = myRs.getString("gebruiker_toegang");
-		String gebruikerLogin = myRs.getString("gebruiker_login");
-		String gebruikerPass = myRs.getString("gebruiker_pass");
-
-		Gebruiker tempGebruiker = new Gebruiker(gebruikerId, gebruikerType, voornaam, tussenVoegsel, achternaam, straat,
-				huisNummer, huisnrToevoeging, postcode, woonplaats, phone, gebruikerToegang, gebruikerLogin,
-				gebruikerPass);
+		
+		Gebruiker tempGebruiker = new Gebruiker.GebruikerBuilder()
+				.gebruikerId		(myRs.getInt("gebruiker_id"))
+				.gebruikerType		(GebruikerType.valueOf(myRs.getString("gebruiker_type")))
+				.voorNaam			(myRs.getString("gebruiker_voornaam"))
+				.tussenVoegsel		(myRs.getString("gebruiker_tussenvoegsel"))
+				.achterNaam			(myRs.getString("gebruiker_achternaam"))
+				.straat				(myRs.getString("gebruiker_straat"))
+				.huisNummer			(myRs.getInt("gebruiker_huisnummer"))
+				.huisnrToevoeging	(myRs.getString("gebruiker_hn_toevoeging"))
+				.postcode			(myRs.getString("gebruiker_postcode"))
+				.woonplaats			(myRs.getString("gebruiker_woonplaats"))
+				.phone				(myRs.getString("gebruiker_telefoonnr"))
+				.gebruikerToegang	(GebruikerToegang.valueOf(myRs.getString("gebruiker_toegang")))
+				.gebruikerLogin		(myRs.getString("gebruiker_login"))
+				.gebruikerPass		(myRs.getString("gebruiker_pass"))
+				.build();
 
 		return tempGebruiker;
 	}

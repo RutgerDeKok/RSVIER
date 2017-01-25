@@ -1,4 +1,4 @@
-package view;
+package view.main;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -7,6 +7,11 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.SpringLayout;
+
+import view.gebruikers.KlantenPanel;
+import view.gebruikers.MedewerkersPanel;
+import view.orders.OrdersPanel;
+import view.products.ProductenPanel;
 
 
 public class MainPanel extends JPanel{

@@ -8,6 +8,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import daos.GebruikerDao;
+import daos.OrderDao;
+import daos.ProductDao;
+
 public class Model {
 	
 	private OrderDao orderDao;

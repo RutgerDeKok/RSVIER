@@ -40,12 +40,12 @@ public class NieuweOrderListener implements ActionListener {
 			klantList = controller.getModel().getGebruikerDao().getAllKlantenByType("Klant");
 			productList = controller.getModel().getProductDao().getAllProducten();
 			
-			// update klantList en pductList in nieuweOrderPanel,  needed when Order is complete button is pressed
+			// update klantList en productList in nieuweOrderPanel,  needed when Order is complete button is pressed
 			controller.getView().getMainpanel().getOrderPanel().getNieuweOrderPnl().setKlantList(klantList);
 			controller.getView().getMainpanel().getOrderPanel().getNieuweOrderPnl().setProductList(productList);
 			
 			
-			// convert 
+			// convert data from objects to lists for combobox and textfield
 			klantConverter = new KlantToComboConverter();
 			productConverter = new ProductToComboConverter(productList);
 			
@@ -54,9 +54,6 @@ public class NieuweOrderListener implements ActionListener {
 			productOptions = productConverter.getComboList();
 			productPrijzen = productConverter.getPrijzenList();
 			
-			// let the controller know  for reference
-//			controller.setKlantOptions(klantOptions);
-//			controller.setProductOptions(productOptions);
 			
 			// populate comboBox met klanten en producten
 			controller.getView().getMainpanel().getOrderPanel().getNieuweOrderPnl().setKlantOptions(klantOptions);
@@ -64,7 +61,7 @@ public class NieuweOrderListener implements ActionListener {
 			controller.getView().getMainpanel().getOrderPanel().getNieuweOrderPnl().setProductPrijzen(productPrijzen);
 			
 			// add ItemListenere 
-			controller.getView().getMainpanel().getOrderPanel().getNieuweOrderPnl().addProductSelectListener();
+			controller.getView().getMainpanel().getOrderPanel().getNieuweOrderPnl().addProductSelectListeners();
 			
 			
 			

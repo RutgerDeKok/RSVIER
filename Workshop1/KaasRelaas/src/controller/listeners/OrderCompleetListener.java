@@ -3,8 +3,8 @@ package controller.listeners;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
+
 import java.sql.Date;
-import java.time.LocalDate;
 
 import controller.Controller;
 import model.Order;
@@ -20,98 +20,106 @@ public class OrderCompleetListener implements ActionListener {
 	}
 	
 	
-
 	public void actionPerformed(ActionEvent e) {
 
 		try {
-			// populate Order
-			Order tempOrder = new Order();
-
-
-			/* set Medewerker Id = 1, als inlog functie werkt kan 
-			 * de juiste medewerker geselecteerd worden 
-			 */
-			tempOrder.setMedewerkerId(1);
-
-			// datum
+			boolean productExists;
+			int subOrderPnlIndex;
+			int indexProd;
 			
-			java.util.Date javaDate = new java.util.Date();
-			long javaTime = javaDate.getTime();
-			java.sql.Date sqlDate = new java.sql.Date(javaTime);
-			tempOrder.setOrderDatum(sqlDate);
-
+			Date sqlDate;
+			int klantId;
+			int idProdA;
+			int idProdB;
+			int idProdC;
+			int aantalProdA;
+			int aantalProdB;
+			int aantalProdC;
+			
+			
+			// datum (today)
+			sqlDate = new java.sql.Date(new java.util.Date().getTime());
 			// klant
-			int klantId = controller.getView().getMainpanel().getOrderPanel().
+			klantId = controller.getView().getMainpanel().getOrderPanel().
 					getNieuweOrderPnl().getklantId();
-			tempOrder.setKlantId(klantId);
 
 			// Product A id en aantal
-
-			int prodIindex = controller.getView().getMainpanel().getOrderPanel().
-					getNieuweOrderPnl().getSubOrderPanel(0).getProductIndex();
-			if (prodIindex >= 0) {
-				int prodId = controller.getView().getMainpanel().getOrderPanel().
-						getNieuweOrderPnl().getProductList().get(prodIindex).getProductId();
-				tempOrder.setProductA_Id(prodId);
-
-				int aantal = controller.getView().getMainpanel().getOrderPanel().
-						getNieuweOrderPnl().getSubOrderPanel(0).getAantal();
-				tempOrder.setProductA_aantal(aantal);
+			subOrderPnlIndex = 0;
+			indexProd = controller.getView().getMainpanel().getOrderPanel().
+					getNieuweOrderPnl().getSubOrderPanel(subOrderPnlIndex).getProductIndex();
+			
+			productExists = (indexProd>=0);
+			if (productExists){
+				idProdA = controller.getView().getMainpanel().getOrderPanel().
+						getNieuweOrderPnl().getProductList().get(indexProd).getProductId();
+		
+				aantalProdA = controller.getView().getMainpanel().getOrderPanel().
+						getNieuweOrderPnl().getSubOrderPanel(subOrderPnlIndex).getAantal();
+			} else {
+				idProdA = 0;
+				aantalProdA = 0;
 			}
 			
 			// Product B id en aantal
-			int panelIndex = 0;
-			prodIindex = controller.getView().getMainpanel().getOrderPanel().
-					getNieuweOrderPnl().getSubOrderPanel(panelIndex).getProductIndex();
-			if (prodIindex >= 0) {
-				int prodId = controller.getView().getMainpanel().getOrderPanel().
-						getNieuweOrderPnl().getProductList().get(prodIindex).getProductId();
-				tempOrder.setProductB_Id(prodId);
-
-				int aantal = controller.getView().getMainpanel().getOrderPanel().
-						getNieuweOrderPnl().getSubOrderPanel(panelIndex).getAantal();
-				tempOrder.setProductB_aantal(aantal);
-			}
+			subOrderPnlIndex = 1;
+			indexProd = controller.getView().getMainpanel().getOrderPanel().
+					getNieuweOrderPnl().getSubOrderPanel(subOrderPnlIndex).getProductIndex();
 			
-			// Product B id en aantal
-			panelIndex = 1;
-			prodIindex = controller.getView().getMainpanel().getOrderPanel().
-					getNieuweOrderPnl().getSubOrderPanel(panelIndex).getProductIndex();
-			if (prodIindex >= 0) {
-				int prodId = controller.getView().getMainpanel().getOrderPanel().
-						getNieuweOrderPnl().getProductList().get(prodIindex).getProductId();
-				tempOrder.setProductB_Id(prodId);
-
-				int aantal = controller.getView().getMainpanel().getOrderPanel().
-						getNieuweOrderPnl().getSubOrderPanel(panelIndex).getAantal();
-				tempOrder.setProductB_aantal(aantal);
+			productExists = (indexProd>=0);
+			if (productExists){
+				idProdB = controller.getView().getMainpanel().getOrderPanel().
+						getNieuweOrderPnl().getProductList().get(indexProd).getProductId();
+		
+				aantalProdB = controller.getView().getMainpanel().getOrderPanel().
+						getNieuweOrderPnl().getSubOrderPanel(subOrderPnlIndex).getAantal();
+			} else {
+				idProdB = 0;
+				aantalProdB = 0;
 			}
-			
+
 			// Product C id en aantal
-			panelIndex = 2;
-			prodIindex = controller.getView().getMainpanel().getOrderPanel().
-					getNieuweOrderPnl().getSubOrderPanel(panelIndex).getProductIndex();
-			if (prodIindex >= 0) {
-				int prodId = controller.getView().getMainpanel().getOrderPanel().
-						getNieuweOrderPnl().getProductList().get(prodIindex).getProductId();
-				tempOrder.setProductB_Id(prodId);
-
-				int aantal = controller.getView().getMainpanel().getOrderPanel().
-						getNieuweOrderPnl().getSubOrderPanel(panelIndex).getAantal();
-				tempOrder.setProductB_aantal(aantal);
+			subOrderPnlIndex = 2;
+			indexProd = controller.getView().getMainpanel().getOrderPanel().
+					getNieuweOrderPnl().getSubOrderPanel(subOrderPnlIndex).getProductIndex();
+			
+			productExists = (indexProd>=0);
+			if (productExists){
+				idProdC = controller.getView().getMainpanel().getOrderPanel().
+						getNieuweOrderPnl().getProductList().get(indexProd).getProductId();
+		
+				aantalProdC = controller.getView().getMainpanel().getOrderPanel().
+						getNieuweOrderPnl().getSubOrderPanel(subOrderPnlIndex).getAantal();
+			} else {
+				idProdC = 0;
+				aantalProdC = 0;
 			}
 			
 			// totaal bedrag
 			BigDecimal totaalBedrag = controller.getView().getMainpanel().getOrderPanel().
 					getNieuweOrderPnl().SumSubtotalen();
-			tempOrder.setTotaalBedrag(totaalBedrag);
-			//
+	
+			
+			Order tempOrder = new Order.OrderBuilder()
+					
+					.medewerkerId	(1)
+					.orderDatum		(sqlDate)
+					.klantId		(klantId)
+					.productA_Id	(idProdA)
+					.productB_Id	(idProdB)
+					.productC_Id	(idProdC)
+					.productA_aantal(aantalProdA)
+					.productB_aantal(aantalProdB)
+					.productC_aantal(aantalProdC)
+					.totaalBedrag	(totaalBedrag)
+					.build();
+			
+			
 			
 			if(totaalBedrag.doubleValue() >0){
 			 controller.getView().getMainpanel().getOrderPanel().setOrderCard("overzOrdersPnl");
 			 // send Order to Database  ------------
 			 controller.sendOrdertoDB(tempOrder);
-			 //-------------------------------------
+		
 			}
 			
 		} catch (Exception e1) {

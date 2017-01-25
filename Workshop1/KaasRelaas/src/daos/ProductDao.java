@@ -1,12 +1,13 @@
-package model;
+package daos;
 
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
+import model.Product;
 
 public class ProductDao {
 
@@ -60,14 +61,13 @@ public class ProductDao {
 
 	private Product convertRowToProduct(ResultSet myRs) throws SQLException {
 
-		int productId = myRs.getInt("product_id");
-		String productNaam = myRs.getString("product_naam");
-		BigDecimal productPrijs = myRs.getBigDecimal("product_prijs");
-		int aantalVoorraad = myRs.getInt("product_op_voorraad");
-
-
-		Product tempProduct = new Product(productId, productNaam, productPrijs, aantalVoorraad);
-
+		Product tempProduct = new Product.ProductBuilder()
+				.productId		(myRs.getInt("product_id"))
+				.productNaam	(myRs.getString("product_naam"))
+				.prijs			(myRs.getBigDecimal("product_prijs"))
+				.aantalVoorraad	(myRs.getInt("product_op_voorraad"))
+				.build();
+		
 		return tempProduct;
 	}
 	

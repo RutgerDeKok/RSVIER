@@ -1,4 +1,4 @@
-package view;
+package view.orders;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -14,6 +14,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import view.main.SimpleTablePanel;
+
 public class OverzOrdersPnl extends JPanel {
 
 	private static final long serialVersionUID = 1L;
@@ -25,7 +27,7 @@ public class OverzOrdersPnl extends JPanel {
 	
 	private String[][] data = {{"-","-","-","-","-","-","-Edit-"}};
 	private String[] columnNames = {"ID","Datum","Mw Id", "Klant","Aantal","Totaal","."};
-	private int[] columnWidths = {40,110, 65, 423,65,80,80};
+	private int[] columnWidths = {40,110, 65, 420,65,80,74};
 	
 
 public OverzOrdersPnl(){
@@ -49,8 +51,6 @@ public OverzOrdersPnl(){
 		updateButton.setFont(new Font("Tahoma", Font.PLAIN, 22));
 		topPanel.add(updateButton);
 		
-		
-
 	
 		JLabel lblNewLabel = new JLabel("            Orders Overzicht  ");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.LEFT);
@@ -68,34 +68,13 @@ public OverzOrdersPnl(){
 		add(topPanel, BorderLayout.NORTH);
 		
 		
-		
-		
 		tablePanel = new SimpleTablePanel(data, columnNames, columnWidths);
 		add(tablePanel, BorderLayout.CENTER);
-		tablePanel.setVisible(true);
-		
-//		createEditTable();
-		
+		tablePanel.setVisible(true);		
 		
 	} // end constructor
 	
 	
-//	// table of one column on side that has values "edit" (will be clickable in future)
-//	private void createEditTable() {
-//		String[] editHdr = {"."};
-//		String[][]editData = new String[data.length][1];
-//		int[] editWidth = {55};
-//		
-//		for(int i = 0; i<data.length;i++){
-//			editData[i][0] = " Edit";
-//		}
-//	
-//		SimpleTablePanel tableEditPanel = new SimpleTablePanel(editData,editHdr, editWidth);
-//		tableEditPanel.setPaneWidth(60);
-//		add(tableEditPanel, BorderLayout.EAST);
-//		tableEditPanel.setVisible(true);
-//		
-//	}
 
 
 	public void addNieuweOrderListener(ActionListener listenForNieuwButton){  
@@ -115,7 +94,6 @@ public OverzOrdersPnl(){
 		
 		this.data = data;
 		tablePanel.updateTable(data);
-//		createEditTable();
 		this.revalidate();
 
 	}

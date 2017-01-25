@@ -1,4 +1,4 @@
-package view;
+package view.main;
 
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -10,6 +10,7 @@ public class View extends JFrame{
 
 	private static final long serialVersionUID = 1L;
 	private MainPanel mainPanel;
+	private CardLayout mainCardLayout;
 
 	public View() {
 		initialize();
@@ -17,7 +18,7 @@ public class View extends JFrame{
 
 	private void initialize() {
 
-		CardLayout mainCardLayout = new CardLayout(0, 0);
+		mainCardLayout = new CardLayout(0, 0);
 		setTitle("- Boer Piets Kaas Handel -");
 		setBackground(Color.LIGHT_GRAY);
 		setBounds(100, 100, 900, 600);

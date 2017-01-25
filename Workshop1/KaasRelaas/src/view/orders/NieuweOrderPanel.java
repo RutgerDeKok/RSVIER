@@ -1,4 +1,4 @@
-package view;
+package view.orders;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -149,14 +149,14 @@ public class NieuweOrderPanel extends JPanel{
 	}
 	
 	
-	
+	// this method is called from the Controller, the listener holds an instance of Controller
 	public void addOrderCompleetListener(ActionListener listenForCompleetButton){  
 		
 		orderCompleetButton.addActionListener(listenForCompleetButton);
 	}
 	
 	
-	public void addProductSelectListener(){
+	public void addProductSelectListeners(){
 		
 		for(SubOrderPanel sop :subOrderPanels){
 			sop.addProductedListeners();

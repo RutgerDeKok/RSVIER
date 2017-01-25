@@ -2,7 +2,7 @@ package controller;
 
 
 import model.Model;
-import view.View;
+import view.main.View;
 
 public class KaasAppMain {
 
@@ -12,7 +12,7 @@ public class KaasAppMain {
 		View kaasView = new View();
     	Model kaasModel = new Model();
 	
-		Controller kaasController = new Controller(kaasView,kaasModel);
+		Controller controller = new Controller(kaasView,kaasModel);
 		
         kaasView.setVisible(true);
 

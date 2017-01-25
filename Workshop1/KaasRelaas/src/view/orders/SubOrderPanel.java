@@ -1,4 +1,4 @@
-package view;
+package view.orders;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
@@ -29,7 +30,7 @@ public class SubOrderPanel extends JPanel {
 	private JTextField aantalTextField;
 	private JTextField subtotaalTextField;
 	private List<String> productOptions;
-	private List<BigDecimal> productPrijzen;
+	private List<BigDecimal> productPrijzen = new ArrayList<BigDecimal>();
 	private BigDecimal prijs;
 	private NieuweOrderPanel nieuweOrderPanel;
 	
@@ -142,6 +143,51 @@ public class SubOrderPanel extends JPanel {
 		gbc_totaalTextField.gridy = 1;
 		add(subtotaalTextField, gbc_totaalTextField);
 		
+		
+		
+//		// handler 1
+//		productComboBox.addItemListener(new ItemListener() {
+//			public void itemStateChanged(ItemEvent e) {
+//				
+//				aantalTextField.setText("0");
+//				subtotaalTextField.setText("0");
+//				
+//				if(productComboBox.getSelectedIndex()==0) {
+//					
+//					setPrijs(0);
+//					aantalTextField.setEditable(false);
+//					
+//				}else{ aantalTextField.setEditable(true);
+//				
+//				int keuze = (int) productComboBox.getSelectedIndex();
+//				setPrijs(keuze);
+//				
+//				}
+//				nieuweOrderPanel.SumSubtotalen();
+//			}	
+//		});
+//		
+//		// handler 2
+//		aantalTextField.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				try {
+//					int aantal = Integer.parseInt(aantalTextField.getText());
+//			
+//					BigDecimal subtotaal = new BigDecimal(aantal).multiply(prijs);
+//					
+//					subtotaalTextField.setText(subtotaal.toString());
+//
+//					
+//				} catch (NumberFormatException e1) {
+////					e1.printStackTrace();
+//					aantalTextField.setText("0");
+//				}finally{
+//					nieuweOrderPanel.SumSubtotalen();
+//				}			
+//			}
+//		});
+		
+		
 	
 	}
 	
@@ -150,6 +196,9 @@ public class SubOrderPanel extends JPanel {
 	
 	//add two handlers
 	public void addProductedListeners(){  
+		
+		// handlers cannot be added in constructor. because calling setPrijs(keuze)
+		// would give a null pointer error at that time
 		
 		// handler 1
 		productComboBox.addItemListener(new ItemListener() {

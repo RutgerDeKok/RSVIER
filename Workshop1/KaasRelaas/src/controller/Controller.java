@@ -6,24 +6,27 @@ import controller.listeners.OrderCompleetListener;
 import controller.listeners.UpdateOrderLijstListener;
 import model.Model;
 import model.Order;
-import view.View;
+import view.main.View;
 
 public class Controller {
 	
 	private View theView;
 	private Model theModel;
-//	private List<String> klantOptions;
-//	private List<String> productOptions;
 
 
 	public Controller(View view, Model model) {
 		theView = view;
 		theModel = model;
-
+		
+		// adding Handlers that need access to Controller 
+		
+		// NieuweOrderListener
 		this.theView.getMainpanel().getOrderPanel().getOverzOrdersPnl().
 			addNieuweOrderListener(new NieuweOrderListener(this));
+		// UpdateOrderLijstListener
 		this.theView.getMainpanel().getOrderPanel().getOverzOrdersPnl().
 			addUpdateOrderListener(new UpdateOrderLijstListener(this));
+		//OrderCompleetListener
 		this.theView.getMainpanel().getOrderPanel().getNieuweOrderPnl().
 			addOrderCompleetListener(new OrderCompleetListener(this));
 		
@@ -40,13 +43,6 @@ public class Controller {
 		return theView;
 	}
 	
-//	public void setKlantOptions(List<String> klantOptions) {
-//		this.klantOptions = klantOptions;
-//	}
-//
-//	public void setProductOptions(List<String> productOptions) {
-//		this.productOptions = productOptions;
-//	}
 
 
 	public void sendOrdertoDB(Order order) throws Exception {

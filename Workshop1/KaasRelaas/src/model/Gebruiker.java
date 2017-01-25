@@ -3,44 +3,38 @@ package model;
 public class Gebruiker {
 
 
-		private int gebruikerId;
-		private String gebruikerType;
-		private String voornaam;
-		private String tussenVoegsel;
-		private String achternaam;
-//		private Adres adres;
-		private String straat;
-		private int huisNummer;
-		private String huisnrToevoeging;
-		private String postcode;
-		private String woonplaats;
-		private String phone;
-		private String gebruikerToegang;
-		private String gebruikerLogin;
-		private String gebruikerPass;
+		private final int gebruikerId;
+		private final GebruikerType gebruikerType;
+		private final String voornaam;
+		private final String tussenVoegsel;
+		private final String achternaam;
+		private final String straat;
+		private final int huisNummer;
+		private final String huisnrToevoeging;
+		private final String postcode;
+		private final String woonplaats;
+		private final String phone;
+		private final GebruikerToegang gebruikerToegang;
+		private final String gebruikerLogin;
+		private final String gebruikerPass;
 		
 		// constructor
-		public Gebruiker(){}
-
-		public Gebruiker(int gebruikerId, String gebruikerType, String voorNaam, String tussenVoegsel, 
-		String achterNaam, String straat, int huisNummer, String huisnrToevoeging, String postcode,
-		String woonplaats, String phone, String gebruikerToegang, String gebruikerLogin, String gebruikerPass){
+		public Gebruiker(GebruikerBuilder builder){
 			
-		this.gebruikerId = gebruikerId;
-		this.gebruikerType = gebruikerType;
-		this.voornaam = voorNaam;
-		this.tussenVoegsel = tussenVoegsel;
-		this.achternaam = achterNaam;
-//		this.adres = adres;
-		this.straat = straat;
-		this.huisNummer = huisNummer;
-		this.huisnrToevoeging = huisnrToevoeging;
-		this.postcode = postcode;
-		this.woonplaats = woonplaats;
-		this.phone = phone;
-		this.gebruikerToegang = gebruikerToegang;
-		this.gebruikerLogin = gebruikerLogin;
-		this.gebruikerPass = gebruikerPass;
+		this.gebruikerId = 		builder.getGebruikerId();
+		this.gebruikerType = 	builder.getGebruikerType();
+		this.voornaam = 		builder.getVoorNaam();
+		this.tussenVoegsel = 	builder.getTussenVoegsel();
+		this.achternaam = 		builder.getAchterNaam();
+		this.straat = 			builder.getStraat();
+		this.huisNummer = 		builder.getHuisNummer();
+		this.huisnrToevoeging = builder.getHuisnrToevoeging();
+		this.postcode = 		builder.getPostcode();
+		this.woonplaats = 		builder.getWoonplaats();
+		this.phone = 			builder.getPhone();
+		this.gebruikerToegang = builder.getGebruikerToegang();
+		this.gebruikerLogin = 	builder.getGebruikerLogin();
+		this.gebruikerPass = 	builder.getGebruikerPass();
 		}
 		
 		
@@ -54,127 +48,184 @@ public class Gebruiker {
 							gebruikerLogin, gebruikerPass);
 		}
 			
-			// getters and setters
+			// getters 
 
 		public int getGebruikerId() {
 			return gebruikerId;
 		}
-
-		public void setGebruikerId(int gebruikerId) {
-			this.gebruikerId = gebruikerId;
-		}
-		
-		public String getGebruikerType() {
+		public GebruikerType getGebruikerType() {
 			return gebruikerType;
 		}
-
-		public void setGebruikerType(String gebruikerType) {
-			this.gebruikerType = gebruikerType;
-		}
-
 		public String getVoorNaam() {
 			return voornaam;
 		}
-
-		public void setVoorNaam(String voorNaam) {
-			this.voornaam = voorNaam;
-		}
-
 		public String getTussenVoegsel() {
 			return tussenVoegsel;
 		}
-
-		public void setTussenVoegsel(String tussenVoegsel) {
-			this.tussenVoegsel = tussenVoegsel;
-		}
-
 		public String getAchterNaam() {
 			return achternaam;
 		}
-
-		public void setAchterNaam(String achterNaam) {
-			this.achternaam = achterNaam;
-		}
-		
 		public String getStraat() {
 			return straat;
 		}
-
-		public void setStraat(String straat) {
-			this.straat = straat;
-		}
-
-		public int getHuisNummer() {
+		public int getHuisNummer(){
 			return huisNummer;
 		}
-
-		public void setHuisNummer(int huisNummer) {
-			this.huisNummer = huisNummer;
-		}
-
 		public String getHuisnrToevoeging() {
 			return huisnrToevoeging;
 		}
-
-		public void setHuisnrToevoeging(String huisnrToevoeging) {
-			this.huisnrToevoeging = huisnrToevoeging;
-		}
-
 		public String getPostcode() {
 			return postcode;
 		}
-
-		public void setPostcode(String postcode) {
-			this.postcode = postcode;
-		}
-
 		public String getWoonplaats() {
 			return woonplaats;
 		}
-
-		public void setWoonplaats(String woonplaats) {
-			this.woonplaats = woonplaats;
-		}
-
-//		public Adres getAdres() {
-//			return adres;
-//		}
-//
-//		public void setAdres(Adres adres) {
-//			this.adres = adres;
-//		}
-
 		public String getPhone() {
 			return phone;
 		}
-
-		public void setPhone(String phone) {
-			this.phone = phone;
-		}
-
-		public String getGebruikerToegang() {
+		public GebruikerToegang getGebruikerToegang() {
 			return gebruikerToegang;
 		}
-
-		public void setGebruikerToegang(String gebruikerToegang) {
-			this.gebruikerToegang = gebruikerToegang;
-		}
-
 		public String getGebruikerLogin() {
 			return gebruikerLogin;
 		}
-
-		public void setGebruikerLogin(String gebruikerLogin) {
-			this.gebruikerLogin = gebruikerLogin;
-		}
-
 		public String getGebruikerPass() {
 			return gebruikerPass;
 		}
+		
+		
+		
+		
+		
+		public static class GebruikerBuilder{
+			
+			private int gebruikerId;
+			private GebruikerType gebruikerType;
+			private String voornaam;
+			private String tussenVoegsel;
+			private String achternaam;
+			private String straat;
+			private int huisNummer;
+			private String huisnrToevoeging;
+			private String postcode;
+			private String woonplaats;
+			private String phone;
+			private GebruikerToegang gebruikerToegang;
+			private String gebruikerLogin;
+			private String gebruikerPass;
+			
+			
+			// getters
 
-		public void setGebruikerPass(String gebruikerPass) {
-			this.gebruikerPass = gebruikerPass;
+			public int getGebruikerId() {
+				return gebruikerId;
+			}
+			public GebruikerType getGebruikerType() {
+				return gebruikerType;
+			}
+			public String getVoorNaam() {
+				return voornaam;
+			}
+			public String getTussenVoegsel() {
+				return tussenVoegsel;
+			}
+			public String getAchterNaam() {
+				return achternaam;
+			}
+			public String getStraat() {
+				return straat;
+			}
+			public int getHuisNummer(){
+				return huisNummer;
+			}
+			public String getHuisnrToevoeging() {
+				return huisnrToevoeging;
+			}
+			public String getPostcode() {
+				return postcode;
+			}
+			public String getWoonplaats() {
+				return woonplaats;
+			}
+			public String getPhone() {
+				return phone;
+			}
+			public GebruikerToegang getGebruikerToegang() {
+				return gebruikerToegang;
+			}
+			public String getGebruikerLogin() {
+				return gebruikerLogin;
+			}
+			public String getGebruikerPass() {
+				return gebruikerPass;
+			}
+			
+			
+			//setters
+			public GebruikerBuilder gebruikerId(int gebruikerId) {
+				this.gebruikerId = gebruikerId;
+				return this;
+			}
+			public GebruikerBuilder gebruikerType(GebruikerType gebruikerType) {
+				this.gebruikerType = gebruikerType;
+				return this;
+			}
+			public GebruikerBuilder voorNaam(String voorNaam) {
+				this.voornaam = voorNaam;
+				return this;
+			}
+			public GebruikerBuilder tussenVoegsel(String tussenVoegsel) {
+				this.tussenVoegsel = tussenVoegsel;
+				return this;
+			}
+			public GebruikerBuilder achterNaam(String achterNaam) {
+				this.achternaam = achterNaam;
+				return this;
+			}
+			public GebruikerBuilder straat(String straat) {
+				this.straat = straat;
+				return this;
+			}
+			public GebruikerBuilder huisNummer(int huisNummer) {
+				this.huisNummer = huisNummer;
+				return this;
+			}
+			public GebruikerBuilder huisnrToevoeging(String huisnrToevoeging) {
+				this.huisnrToevoeging = huisnrToevoeging;
+				return this;
+			}
+			public GebruikerBuilder postcode(String postcode) {
+				this.postcode = postcode;
+				return this;
+			}
+			public GebruikerBuilder woonplaats(String woonplaats) {
+				this.woonplaats = woonplaats;
+				return this;
+			}
+			public GebruikerBuilder phone(String phone) {
+				this.phone = phone;
+				return this;
+			}
+			public GebruikerBuilder gebruikerToegang(GebruikerToegang gebruikerToegang) {
+				this.gebruikerToegang = gebruikerToegang;
+				return this;
+			}
+			public GebruikerBuilder gebruikerLogin(String gebruikerLogin) {
+				this.gebruikerLogin = gebruikerLogin;
+				return this;
+			}
+			public GebruikerBuilder gebruikerPass(String gebruikerPass) {
+				this.gebruikerPass = gebruikerPass;
+				return this;
+			}
+			
+			public Gebruiker build() {
+				return new Gebruiker(this);
+			}
+			
 		}
+		
+		
 		
 		
 		

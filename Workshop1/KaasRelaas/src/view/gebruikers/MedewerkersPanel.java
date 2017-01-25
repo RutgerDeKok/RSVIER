@@ -1,4 +1,4 @@
-package view;
+package view.gebruikers;
 
 import javax.swing.JPanel;
 

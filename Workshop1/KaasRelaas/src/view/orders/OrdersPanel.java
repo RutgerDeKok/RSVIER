@@ -1,4 +1,4 @@
-package view;
+package view.orders;
 
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
@@ -30,7 +30,7 @@ public class OrdersPanel extends JPanel {
 		
 		add(overzOrdersPnl, "overzOrdersPnl");
 
-		nieuweOrderPnl = new NieuweOrderPanel();
+	//	nieuweOrderPnl = new NieuweOrderPanel();
 		add(nieuweOrderPnl, "NieuweOrderPnl");
 	
 		
