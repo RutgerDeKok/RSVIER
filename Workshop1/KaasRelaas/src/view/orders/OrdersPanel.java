@@ -30,7 +30,7 @@ public class OrdersPanel extends JPanel {
 		
 		add(overzOrdersPnl, "overzOrdersPnl");
 
-	//	nieuweOrderPnl = new NieuweOrderPanel();
+		nieuweOrderPnl = new NieuweOrderPanel();
 		add(nieuweOrderPnl, "NieuweOrderPnl");
 	
 		
