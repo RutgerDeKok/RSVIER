@@ -21,14 +21,14 @@ public class Controller {
 		// adding Handlers that need access to Controller 
 		
 		// NieuweOrderListener
-		this.theView.getMainpanel().getOrderPanel().getOverzOrdersPnl().
-			addNieuweOrderListener(new NieuweOrderListener(this));
+//		this.theView.getMainpanel().getOrderPanel().getOverzOrdersPnl().
+//			addNieuweOrderListener(new NieuweOrderListener(this));
 		// UpdateOrderLijstListener
 		this.theView.getMainpanel().getOrderPanel().getOverzOrdersPnl().
 			addUpdateOrderListener(new UpdateOrderLijstListener(this));
 		//OrderCompleetListener
-		this.theView.getMainpanel().getOrderPanel().getNieuweOrderPnl().
-			addOrderCompleetListener(new OrderCompleetListener(this));
+//		this.theView.getMainpanel().getOrderPanel().getNieuweOrderPnl().
+//			addOrderCompleetListener(new OrderCompleetListener(this));
 		
 	}
 	
