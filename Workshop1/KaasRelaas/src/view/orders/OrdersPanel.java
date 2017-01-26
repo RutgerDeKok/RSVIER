@@ -45,6 +45,11 @@ public class OrdersPanel extends JPanel {
 		nieuweOrderPnl.addCancelOrderListener(new CancelOrderListener());
 	}
 	
+	public void addNewOrderPnl(){
+		nieuweOrderPnl = new NieuweOrderPanel();
+		add(nieuweOrderPnl, "NieuweOrderPnl");
+		orderCardLayout.show(this, "NieuweOrderPnl");
+	}
 	
 	
 	public void setOrderCard(String cardString){
