@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.Order;
-import model.Order.OrderBuilder;
 
 public class OrderDao {
 
@@ -23,33 +22,32 @@ public class OrderDao {
 	public List<Order> getAllOrders() throws Exception {
 		List<Order> orderList = new ArrayList<>();
 
-		Statement myStmt = null;
-		ResultSet myRs = null;
-
-		try {
-			myStmt = myConn.createStatement();
-			myRs = myStmt.executeQuery("select * from bestellingen");
-
+		try (
+			Statement myStmt = myConn.createStatement();
+			ResultSet myRs = myStmt.executeQuery("select * from bestellingen")
+				){
 			while (myRs.next()) {
 				Order tempOrder = convertRowToOrder(myRs);
 				orderList.add(tempOrder);
 			}
 
-			return orderList;
-		} finally {
-			close(myStmt, myRs);
+			
+		} catch(Exception e){
+			e.printStackTrace();
 		}
+		return orderList;
 	}
 	
 	
-	public void UpdateOrder(Order order) throws Exception {
-
-		Statement myStmt = null;
+	public void saveOrUpdate(Order order) throws Exception {
+		
 		ResultSet myRs = null;
-
-		try {
-			myStmt = myConn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+		
+		try (
+			Statement myStmt = myConn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
 					ResultSet.CONCUR_UPDATABLE);
+			) {
+			
 			
 			
 			// insert new data
@@ -106,8 +104,8 @@ public class OrderDao {
 			// commit data
 			myRs.insertRow();
 			
-		} finally {
-			close(myStmt, myRs);
+		} catch(Exception e) {
+			e.printStackTrace();
 		}
 	}
 	
@@ -134,18 +132,6 @@ public class OrderDao {
 	}
 	
 	
-	
-	
-	
 
-	private void close(Statement myStmt, ResultSet myRs) throws SQLException {
-		if (myRs != null) {
-			myRs.close();
-		}
-
-		if (myStmt != null) {
-			myStmt.close();
-		}
-	}
 
 }

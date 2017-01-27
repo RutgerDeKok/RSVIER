@@ -46,7 +46,7 @@ public class Controller {
 
 
 	public void sendOrdertoDB(Order order) throws Exception {
-		theModel.getOrderDao().UpdateOrder(order);
+		theModel.getOrderDao().saveOrUpdate(order);
 		
 	}
 	

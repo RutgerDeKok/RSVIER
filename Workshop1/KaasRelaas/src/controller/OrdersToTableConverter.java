@@ -7,12 +7,12 @@ import java.util.List;
 import model.Gebruiker;
 import model.Order;
 
-public class OrdersToTableCoverter {
+public class OrdersToTableConverter {
 	
 
 	private Controller controller;
 	
-	public OrdersToTableCoverter(Controller controller) {
+	public OrdersToTableConverter(Controller controller) {
 		this.controller = controller;
 	}
 

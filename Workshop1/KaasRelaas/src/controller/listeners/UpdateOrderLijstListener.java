@@ -5,13 +5,13 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 import controller.Controller;
-import controller.OrdersToTableCoverter;
+import controller.OrdersToTableConverter;
 import model.Order;
 
 public class UpdateOrderLijstListener implements ActionListener {
 	
 	private Controller controller;
-	private OrdersToTableCoverter orderConverter;
+	private OrdersToTableConverter orderConverter;
 	
 	public UpdateOrderLijstListener(Controller controller){
 		this.controller = controller;
@@ -27,7 +27,7 @@ public class UpdateOrderLijstListener implements ActionListener {
 			// List converteren naar String[][] voor tabel in view
 			String[][] data;
 			System.out.println("size" +ordersList.size());
-			orderConverter = new OrdersToTableCoverter(controller);
+			orderConverter = new OrdersToTableConverter(controller);
 			data = orderConverter.getData(ordersList);
 			
 		
