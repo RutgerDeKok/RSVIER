@@ -19,15 +19,19 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import controller.Controller;
+import controller.KlantToComboConverter;
+import controller.ProductToComboConverter;
+import controller.listeners.OrderCompleetListener;
 import model.Gebruiker;
 import model.Product;
+import view.orders.OrdersPanel.CancelOrderListener;
 
 public class NieuweOrderPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
 	private JComboBox<String> klantComboBox;
-	private List<String> klantOptions;
 	private JTextField totaalTextField;
 	private JButton orderCompleetButton;
 	private JButton cancelButton;
@@ -35,12 +39,27 @@ public class NieuweOrderPanel extends JPanel {
 	private List<Gebruiker> klantList;
 	private List<Product> productList;
 
-	public NieuweOrderPanel() {
 
-		initialize();
+	public NieuweOrderPanel(Controller controller) throws Exception {
+		
+		// get klanten en product data uit DB via Dao
+		klantList = controller.getModel().getGebruikerDao().getAllKlantenByType("Klant");
+		productList = controller.getModel().getProductDao().getAllProducten();
+		
+		// convert data from objects to lists for combobox and textfield
+		KlantToComboConverter klantConverter = new KlantToComboConverter();
+		ProductToComboConverter productConverter = new ProductToComboConverter(productList);
+		
+		List<String> klantOptions = klantConverter.getComboList(klantList);
+		List<String> productOptions = productConverter.getComboList();
+		List<BigDecimal> productPrijzen; productPrijzen = productConverter.getPrijzenList();
+		
+
+		initialize(klantOptions, productOptions, productPrijzen);
+		addOrderCompleetListener(new OrderCompleetListener(controller));
 	}
 
-	private void initialize() {
+	private void initialize(List<String> klantOptions, List<String> productOptions, List<BigDecimal> productPrijzen) {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
 		JPanel titelPanel = new JPanel();
@@ -66,16 +85,19 @@ public class NieuweOrderPanel extends JPanel {
 
 		klantComboBox = new JComboBox<String>();
 		klantComboBox.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		klantComboBox.setModel(new DefaultComboBoxModel<String>(new String[] {
-				" Kies een klant                                              ", "Klant A", "Klant B", "Klant C" }));
+		klantComboBox.setModel(new DefaultComboBoxModel<String>());
+		for (String s : klantOptions) {
+			klantComboBox.addItem(s.toString());
+		}
 		klantKiesPanel.add(klantComboBox);
 
 		// add three sub order panels
 		subOrderPanels = new SubOrderPanel[3];
 		for (int i = 0; i < subOrderPanels.length; i++) {
-			subOrderPanels[i] = new SubOrderPanel(this);
+			subOrderPanels[i] = new SubOrderPanel(this, productOptions, productPrijzen);
 			add(subOrderPanels[i]);
 		}
+		
 
 		JPanel orderCompleetPanel = new JPanel();
 		GridBagLayout gbl_panel = new GridBagLayout();
@@ -95,6 +117,7 @@ public class NieuweOrderPanel extends JPanel {
 		gbc_CancelButton.gridy = 0;
 		orderCompleetPanel.add(cancelButton, gbc_CancelButton);
 
+
 		orderCompleetButton = new JButton("Order Compleet");
 		orderCompleetButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		GridBagConstraints gbc_CompleetButton = new GridBagConstraints();
@@ -103,6 +126,7 @@ public class NieuweOrderPanel extends JPanel {
 		gbc_CompleetButton.gridwidth = 1;
 		gbc_CompleetButton.gridx = 2;
 		gbc_CompleetButton.gridy = 0;
+		
 		orderCompleetPanel.add(orderCompleetButton, gbc_CompleetButton);
 
 		JLabel OrderTotaalLabel = new JLabel("Order Totaal:  ");
@@ -128,6 +152,7 @@ public class NieuweOrderPanel extends JPanel {
 
 	}
 
+	
 	public BigDecimal SumSubtotalen() {
 
 		BigDecimal totaal = new BigDecimal(0.00);
@@ -140,23 +165,16 @@ public class NieuweOrderPanel extends JPanel {
 	}
 
 	public void addCancelOrderListener(ActionListener listenForCancelButton) {
-		System.out.println("adding cancel listener");
+		
 		cancelButton.addActionListener(listenForCancelButton);
 	}
 
-	// this method is called from the Controller, the listener holds an instance
-	// of Controller
-	public void addOrderCompleetListener(ActionListener listenForCompleetButton) {
+
+	private void addOrderCompleetListener(ActionListener listenForCompleetButton) {
 
 		orderCompleetButton.addActionListener(listenForCompleetButton);
 	}
 
-	public void addProductSelectListeners() {
-
-		for (SubOrderPanel sop : subOrderPanels) {
-			sop.addProductedListeners();
-		}
-	}
 
 	// getters and setters
 
@@ -168,20 +186,6 @@ public class NieuweOrderPanel extends JPanel {
 		this.productList = productList;
 	}
 
-	public void setProductOptions(List<String> options) {
-		System.out.println(options);
-		for (SubOrderPanel sop : subOrderPanels) {
-			System.out.println(sop);
-			sop.setProductOptions(options);
-		}
-	}
-
-	public void setProductPrijzen(List<BigDecimal> productPrijzen) {
-
-		for (SubOrderPanel sop : subOrderPanels) {
-			sop.setProductPrijzen(productPrijzen);
-		}
-	}
 
 	public List<Gebruiker> getKlantList() {
 		return klantList;
@@ -191,18 +195,6 @@ public class NieuweOrderPanel extends JPanel {
 		return productList;
 	}
 
-	public void setKlantOptions(List<String> options) {
-		klantOptions = options;
-		klantComboBox.removeAllItems();
-		for (String s : klantOptions) {
-			klantComboBox.addItem(s.toString());
-		}
-	}
-
-	public JButton getCancelButton() {
-		return cancelButton;
-	}
-
 	public SubOrderPanel getSubOrderPanel(int index) {
 
 		return subOrderPanels[index];
@@ -210,8 +202,6 @@ public class NieuweOrderPanel extends JPanel {
 
 	public int getklantId() {
 		int index = klantComboBox.getSelectedIndex() - 1;
-		System.out.println("Klant index = " + index);
-		System.out.println("Klant = " + klantList.get(index));
 		return klantList.get(index).getGebruikerId();
 	}
 
