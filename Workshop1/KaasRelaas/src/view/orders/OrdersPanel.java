@@ -4,8 +4,9 @@ import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
 import javax.swing.JPanel;
+
+import controller.Controller;
 
 public class OrdersPanel extends JPanel {
 	
@@ -27,21 +28,26 @@ public class OrdersPanel extends JPanel {
 		setLayout(orderCardLayout);
 
 		overzOrdersPnl = new OverzOrdersPnl();
-		
 		add(overzOrdersPnl, "overzOrdersPnl");
-
-		nieuweOrderPnl = new NieuweOrderPanel();
-		add(nieuweOrderPnl, "NieuweOrderPnl");
 	
-		
 		orderCardLayout.show(this, "overzOrdersPnl");
 	
 	}
 	
-	public void refreshNewOrderPnl(){
-		remove(nieuweOrderPnl);
-		nieuweOrderPnl = new NieuweOrderPanel();
-		add(nieuweOrderPnl, "NieuweOrderPnl");
+	public void refreshNewOrderPnl(Controller controller){
+		try {
+			
+			if (nieuweOrderPnl != null)
+				remove(nieuweOrderPnl);
+		
+			nieuweOrderPnl = new NieuweOrderPanel(controller);
+			add(nieuweOrderPnl, "NieuweOrderPnl");
+			orderCardLayout.show(this, "NieuweOrderPnl");
+	
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		nieuweOrderPnl.addCancelOrderListener(new CancelOrderListener());
 	}
 	

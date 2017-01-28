@@ -36,8 +36,10 @@ public class SubOrderPanel extends JPanel {
 	
 	
 
-	public SubOrderPanel(NieuweOrderPanel nieuweOrderPanel) {
+	public SubOrderPanel(NieuweOrderPanel nieuweOrderPanel, List<String> productOptions, List<BigDecimal> productPrijzen) {
 		this.nieuweOrderPanel = nieuweOrderPanel;
+		this.productOptions = productOptions;
+		this.productPrijzen = productPrijzen;
 		initialize();
 	}
 	
@@ -64,8 +66,11 @@ public class SubOrderPanel extends JPanel {
 		add(productLabel, gbc_productLabel);
 
 		productComboBox = new JComboBox<String>();
-		productComboBox.setModel(
-				new DefaultComboBoxModel<String>(new String[] { "Kies een product", "Product A", "Product B", "Product C" }));
+		productComboBox.setModel(new DefaultComboBoxModel<String>());
+		for (String s : productOptions) {
+			productComboBox.addItem(s.toString());
+		}
+		
 		productComboBox.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		GridBagConstraints gbc_productComboBox = new GridBagConstraints();
 		gbc_productComboBox.gridwidth = 2;
@@ -145,61 +150,6 @@ public class SubOrderPanel extends JPanel {
 		
 		
 		
-//		// handler 1
-//		productComboBox.addItemListener(new ItemListener() {
-//			public void itemStateChanged(ItemEvent e) {
-//				
-//				aantalTextField.setText("0");
-//				subtotaalTextField.setText("0");
-//				
-//				if(productComboBox.getSelectedIndex()==0) {
-//					
-//					setPrijs(0);
-//					aantalTextField.setEditable(false);
-//					
-//				}else{ aantalTextField.setEditable(true);
-//				
-//				int keuze = (int) productComboBox.getSelectedIndex();
-//				setPrijs(keuze);
-//				
-//				}
-//				nieuweOrderPanel.SumSubtotalen();
-//			}	
-//		});
-//		
-//		// handler 2
-//		aantalTextField.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				try {
-//					int aantal = Integer.parseInt(aantalTextField.getText());
-//			
-//					BigDecimal subtotaal = new BigDecimal(aantal).multiply(prijs);
-//					
-//					subtotaalTextField.setText(subtotaal.toString());
-//
-//					
-//				} catch (NumberFormatException e1) {
-////					e1.printStackTrace();
-//					aantalTextField.setText("0");
-//				}finally{
-//					nieuweOrderPanel.SumSubtotalen();
-//				}			
-//			}
-//		});
-		
-		
-	
-	}
-	
-
-
-	
-	//add two handlers
-	public void addProductedListeners(){  
-		
-		// handlers cannot be added in constructor. because calling setPrijs(keuze)
-		// would give a null pointer error at that time
-		
 		// handler 1
 		productComboBox.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
@@ -215,6 +165,7 @@ public class SubOrderPanel extends JPanel {
 				}else{ aantalTextField.setEditable(true);
 				
 				int keuze = (int) productComboBox.getSelectedIndex();
+				System.out.println("keuzeIndex = "+keuze);
 				setPrijs(keuze);
 				
 				}
@@ -242,22 +193,10 @@ public class SubOrderPanel extends JPanel {
 			}
 		});
 		
-	} // end addProductedListeners method
-	
-	
-	public void setProductOptions(List<String> options) {
-		productOptions = options;
-		productComboBox.removeAllItems();
-		
-		for (String s : productOptions) {
-			System.out.println(s);
-			productComboBox.addItem(s.toString());
-		}
 	}
 	
-	public void setProductPrijzen(List<BigDecimal> prijzen) {
-		this.productPrijzen = prijzen;
-	}
+
+
 	
 	public void setPrijs(int keuzeIndex){
 		prijs = productPrijzen.get(keuzeIndex);
@@ -265,14 +204,10 @@ public class SubOrderPanel extends JPanel {
 		
 	}
 
-
 	public void setTotaalText(String text) {
 		subtotaalTextField.setText(text);
 	}
 
-	public void setProductOptions() {
-		productComboBox.getSelectedItem();
-	}
 
 	public String getProductChoice() {
 		return (String) productComboBox.getSelectedItem();

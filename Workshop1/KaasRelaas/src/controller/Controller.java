@@ -2,7 +2,7 @@ package controller;
 
 
 import controller.listeners.NieuweOrderListener;
-import controller.listeners.OrderCompleetListener;
+
 import controller.listeners.UpdateOrderLijstListener;
 import model.Model;
 import model.Order;
@@ -23,12 +23,11 @@ public class Controller {
 		// NieuweOrderListener
 		this.theView.getMainpanel().getOrderPanel().getOverzOrdersPnl().
 			addNieuweOrderListener(new NieuweOrderListener(this));
+		
 		// UpdateOrderLijstListener
 		this.theView.getMainpanel().getOrderPanel().getOverzOrdersPnl().
 			addUpdateOrderListener(new UpdateOrderLijstListener(this));
-		//OrderCompleetListener
-		this.theView.getMainpanel().getOrderPanel().getNieuweOrderPnl().
-			addOrderCompleetListener(new OrderCompleetListener(this));
+
 		
 	}
 	
