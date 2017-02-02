@@ -64,12 +64,11 @@ public class OrdersPanel extends GenericPanel {
 		tablePanel = new SimpleTablePanel(data, columnNames, columnWidths);
 		overzichtsPanel.add(tablePanel, BorderLayout.CENTER);
 		tablePanel.setVisible(true);
-		
-		
-
+	
 	}
+	
 
-	private void createNewItemPanel(Controller controller) throws Exception {
+	protected void createNewItemPanel(Controller controller) throws Exception {
 		
 		newItemPanel = new JPanel();
 		newItemPanel.setLayout(new BoxLayout(newItemPanel, BoxLayout.Y_AXIS));
@@ -170,9 +169,21 @@ public class OrdersPanel extends GenericPanel {
 
 		newItemPanel.add(orderCompleetPanel);
 		orderCompleetButton.addActionListener(new OrderCompleetListener(controller));
-		
-
+	
 	}
+	
+	
+	public void addNieuweOrderListener(ActionListener listenForNieuwButton) {
+
+		nieuwButton.addActionListener(listenForNieuwButton);
+	}
+
+	public void addUpdateOrderListener(ActionListener listenForUpdateButton) {
+
+		updateButton.addActionListener(listenForUpdateButton);
+		
+	}
+	
 
 	public void refreshNewItemPnl(Controller controller) {
 		try {
@@ -198,7 +209,6 @@ public class OrdersPanel extends GenericPanel {
 	
 
 	
-	@Override
 	public void editRow(int row, Controller controller) {
 		
 		System.out.println("editRow method start");
@@ -226,6 +236,7 @@ public class OrdersPanel extends GenericPanel {
 		subOrderPanels[0].setAantal(order.getProductA_aantal());
 		subOrderPanels[1].setAantal(order.getProductB_aantal());
 		subOrderPanels[2].setAantal(order.getProductC_aantal());
+		SumSubtotalen();
 		
 		deleteButton.addActionListener(e ->{
 			
@@ -256,16 +267,7 @@ public class OrdersPanel extends GenericPanel {
 		
 	}
 
-	public void addNieuweOrderListener(ActionListener listenForNieuwButton) {
-
-		nieuwButton.addActionListener(listenForNieuwButton);
-	}
-
-	public void addUpdateOrderListener(ActionListener listenForUpdateButton) {
-
-		updateButton.addActionListener(listenForUpdateButton);
-		
-	}
+	
 	
 	private int getItemIndex(int id){
 		for(int i=0; i<productList.size();i++){
