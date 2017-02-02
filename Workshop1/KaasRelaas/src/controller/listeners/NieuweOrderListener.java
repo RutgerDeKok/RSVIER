@@ -17,7 +17,7 @@ public class NieuweOrderListener implements ActionListener {
 
 		try {
 			
-			controller.getView().getMainpanel().getOrderPanel().refreshNewOrderPnl(controller);
+			controller.getView().getMainpanel().getOrderPanel().refreshNewItemPnl(controller);
 
 		} catch (Exception e1) {
 			e1.printStackTrace();

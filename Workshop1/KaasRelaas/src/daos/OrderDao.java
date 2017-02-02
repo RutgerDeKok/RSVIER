@@ -57,12 +57,13 @@ public class OrderDao {
 				
 			}else{
 				String query = "UPDATE bestellingen where order_id = "+order.getOrderId()+" Set product_B_id = ?";
+//				String query = "UPDATE bestellingen where order_id = "+order.getOrderId();
 				PreparedStatement queryStatement = (PreparedStatement)myConn.prepareStatement(query);
 				queryStatement.setNull(1, java.sql.Types.INTEGER);
 				
 
-			
-				myRs = myStmt.executeQuery("select * from bestellingen where order_id = "+order.getOrderId());
+				System.out.println("order ID = "+order.getOrderId());
+				myRs = myStmt.executeQuery("select * from bestellingen where bestelling_id = "+order.getOrderId());
 				myRs.first();
 				myRs.updateInt("product_B_id",0);
 				myRs.updateInt("product_B_aantal",0);
@@ -73,7 +74,7 @@ public class OrderDao {
 			
 	
 			
-			myRs.updateInt("medewerker_id", order.getMedewerkerId());
+			myRs.updateInt("medewerker_id", order.get1eMedewerkerId());
 			myRs.updateInt("klant_id", order.getKlantId());
 			myRs.updateInt("product_A_id",order.getProductA_Id());
 			myRs.updateInt("product_A_aantal",order.getProductA_aantal());
@@ -90,8 +91,10 @@ public class OrderDao {
 			}
 			
 			// product B if exists
+			
 			if(order.getProductB_Id()!=0){
 				myRs.updateInt("product_B_id",order.getProductB_Id());
+				System.out.println("product B aantal = "+order.getProductB_aantal());
 				myRs.updateInt("product_B_aantal",order.getProductB_aantal());
 			}
 			
@@ -100,10 +103,13 @@ public class OrderDao {
 				myRs.updateInt("product_C_id",order.getProductC_Id());
 				myRs.updateInt("product_C_aantal",order.getProductC_aantal());
 			}
-		
-			// commit data
-			myRs.insertRow();
 			
+			// commit data
+			if (order.getOrderId()==0){ // nieuwe order
+				myRs.insertRow();
+			}else{
+				myRs.updateRow();
+			}
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -129,6 +135,26 @@ public class OrderDao {
 				.build();
 
 		return tempOrder;
+	}
+
+	public void deleteOrder(int orderId) {
+		System.out.println("Deleting Order : "+orderId);
+	
+
+			try {
+					PreparedStatement st = myConn.prepareStatement("DELETE FROM bestellingen WHERE bestelling_id = ?");
+					st.setInt(1,orderId);
+					st.executeUpdate(); 
+
+			
+				
+			} catch(Exception e){
+				e.printStackTrace();
+			}
+			
+		
+		
+		
 	}
 	
 	

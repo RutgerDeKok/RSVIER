@@ -18,7 +18,7 @@ public class UpdateOrderLijstListener implements ActionListener {
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-		
+		System.out.println("updateOrdersList called");
 		try {
 			// data ophalen uit DB via DAO
 
@@ -26,14 +26,15 @@ public class UpdateOrderLijstListener implements ActionListener {
 			
 			// List converteren naar String[][] voor tabel in view
 			String[][] data;
-			System.out.println("size" +ordersList.size());
+	
 			orderConverter = new OrdersToTableConverter(controller);
 			data = orderConverter.getData(ordersList);
 			
 		
 			//data sturen naar view
-			controller.getView().getMainpanel().getOrderPanel().getOverzOrdersPnl().setData(data);
-				
+			controller.getView().getMainpanel().getOrderPanel().setOrderList(ordersList);
+			controller.getView().getMainpanel().getOrderPanel().setData(data);
+			controller.getView().getMainpanel().getOrderPanel().addTableListener(controller);
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}

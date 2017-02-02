@@ -1,6 +1,8 @@
 package controller;
 
 
+
+
 import controller.listeners.NieuweOrderListener;
 
 import controller.listeners.UpdateOrderLijstListener;
@@ -14,20 +16,23 @@ public class Controller {
 	private Model theModel;
 
 
-	public Controller(View view, Model model) {
+	public Controller(View view, Model model) throws Exception {
 		theView = view;
 		theModel = model;
 		
 		// adding Handlers that need access to Controller 
 		
 		// NieuweOrderListener
-		this.theView.getMainpanel().getOrderPanel().getOverzOrdersPnl().
+		theView.getMainpanel().getOrderPanel().
 			addNieuweOrderListener(new NieuweOrderListener(this));
 		
 		// UpdateOrderLijstListener
-		this.theView.getMainpanel().getOrderPanel().getOverzOrdersPnl().
+		theView.getMainpanel().getOrderPanel().
 			addUpdateOrderListener(new UpdateOrderLijstListener(this));
-
+		
+//		List<Gebruiker> medewerkers = theModel.getGebruikerDao().getAllGebruikersByType(GebruikerType.MEDERWERKER);
+		theView.startLoginPanel();
+		theView.getLoginPanel().addOkListener(this);
 		
 	}
 	

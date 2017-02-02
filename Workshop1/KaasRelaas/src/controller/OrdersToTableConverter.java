@@ -41,7 +41,7 @@ public class OrdersToTableConverter {
 		
 		dataRow[0]= Integer.toString(order.getOrderId());
 		dataRow[1]= order.getOrderDatum().toString();
-		dataRow[2]= Integer.toString(order.getMedewerkerId());
+		dataRow[2]= Integer.toString(order.get1eMedewerkerId());
 		dataRow[3]= klantString;
 		dataRow[4]= Integer.toString(totaalAantalProd);
 		dataRow[5]= order.getTotaalBedrag().toString();

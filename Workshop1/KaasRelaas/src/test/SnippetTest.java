@@ -1,19 +1,18 @@
 package test;
 
-import java.sql.Date;
-import java.time.LocalDate;
-
+import controller.Password;
 
 public class SnippetTest {
 
 	public static void main(String[] args)  {
-		
-		LocalDate date = LocalDate.now();
-		Date datesql = new java.sql.Date(date.getYear()-1900,date.getMonthValue()-1, date.getDayOfMonth());
-		System.out.println(date.getYear());
-		System.out.println(date.getMonthValue());
-		System.out.println(date.getDayOfMonth());
-		System.out.println(datesql.toString());
+		String password = "123456";
+		String stored ="ddvzPuB7YkWh2dJKh2D0HQ==$lIVJtguZUs8=";
+		try {
+			System.out.println(Password.getSaltedHash(password.toCharArray()));
+			System.out.println(Password.check(password.toCharArray(), stored));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 

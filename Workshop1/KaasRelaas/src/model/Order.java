@@ -53,7 +53,7 @@ public class Order {
 	public Date getOrderDatum() {
 		return orderDatum;
 	}
-	public int getMedewerkerId() {
+	public int get1eMedewerkerId() {
 		return medewerkerId;
 	}
 	public int getKlantId() {

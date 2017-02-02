@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.SpringLayout;
 
+import model.Gebruiker;
 import view.gebruikers.KlantenPanel;
 import view.gebruikers.MedewerkersPanel;
 import view.orders.OrdersPanel;
@@ -20,10 +21,13 @@ public class MainPanel extends JPanel{
 
 	private OrdersPanel ordersPanel;
 	private KlantenPanel klantenPanel;
+	private Gebruiker medewerker;
+	private JTabbedPane tabbedPane;
+	private JButton logoutButton;
 	
 
 	public MainPanel() {
-
+			
 		initialize();
 	}
 
@@ -32,7 +36,7 @@ public class MainPanel extends JPanel{
 		SpringLayout springLayoutMain = new SpringLayout();
 		setLayout(springLayoutMain);
 		
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		springLayoutMain.putConstraint(SpringLayout.WEST, tabbedPane, 10, SpringLayout.WEST, this);
 		springLayoutMain.putConstraint(SpringLayout.SOUTH, tabbedPane, -10, SpringLayout.SOUTH, this);
 		springLayoutMain.putConstraint(SpringLayout.EAST, tabbedPane, -10, SpringLayout.EAST, this);
@@ -56,7 +60,7 @@ public class MainPanel extends JPanel{
 		tabbedPane.addTab(" Medewerkers  ", null, medewerkersPanel, null);
 		
 	
-		JButton logoutButton = new JButton("Logout");
+		logoutButton = new JButton("Logout");
 		springLayoutMain.putConstraint(SpringLayout.NORTH, logoutButton, 0, SpringLayout.NORTH, this);
 		springLayoutMain.putConstraint(SpringLayout.SOUTH, logoutButton, 30, SpringLayout.NORTH, this);
 		springLayoutMain.putConstraint(SpringLayout.EAST, logoutButton, -10, SpringLayout.EAST, this);
@@ -64,6 +68,17 @@ public class MainPanel extends JPanel{
 		logoutButton.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		add(logoutButton);
 		
+			
+		
+	}
+	
+	public void addLogoutListener(View theView){
+		logoutButton.addActionListener(e -> {
+			medewerker = null;
+			tabbedPane.setSelectedIndex(0);
+			theView.setCard("loginPanel");
+						
+		});
 	}
 		
 	
@@ -73,6 +88,14 @@ public class MainPanel extends JPanel{
 	
 	public KlantenPanel getKlantenPanel(){
 		return klantenPanel;
+	}
+	
+	public void setMedewerker(Gebruiker medewerker){
+		this.medewerker = medewerker;
+	}
+	
+	public Gebruiker getMedewerker(){
+		return medewerker;
 	}
 	
 

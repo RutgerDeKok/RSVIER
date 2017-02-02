@@ -12,7 +12,11 @@ public class KaasAppMain {
 		View kaasView = new View();
     	Model kaasModel = new Model();
 	
-		Controller controller = new Controller(kaasView,kaasModel);
+		try {
+			Controller controller = new Controller(kaasView,kaasModel);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
         kaasView.setVisible(true);
 

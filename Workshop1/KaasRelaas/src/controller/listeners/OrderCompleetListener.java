@@ -13,6 +13,7 @@ public class OrderCompleetListener implements ActionListener {
 
 	private Controller controller;
 	
+	
 	// constructor
 	public OrderCompleetListener(Controller controller) {
 
@@ -23,11 +24,18 @@ public class OrderCompleetListener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 
 		try {
+			
+//			controller.getView().getMainpanel().getOrderPanel().orderCompleetAction(controller);
+			
+			
 			boolean productExists;
 			int subOrderPnlIndex;
 			int indexProd;
 			
+			int orderId;
+			java.util.Date javaDate;
 			Date sqlDate;
+			int medewerkerId;
 			int klantId;
 			int idProdA;
 			int idProdB;
@@ -36,25 +44,39 @@ public class OrderCompleetListener implements ActionListener {
 			int aantalProdB;
 			int aantalProdC;
 			
+			// orderId
+			orderId = controller.getView().getMainpanel().getOrderPanel().getOrderId();
 			
-			// datum (today)
-			sqlDate = new java.sql.Date(new java.util.Date().getTime());
+			// datum 
+			javaDate = controller.getView().getMainpanel().getOrderPanel().getDate();
+			if(javaDate==null){
+				javaDate = new java.util.Date(); // today
+			}
+			sqlDate = new java.sql.Date(javaDate.getTime());
+			
+			// medewerkerId
+			int de1eMedewerkerId= controller.getView().getMainpanel().getOrderPanel().get1eMedewerkerId();
+			if(de1eMedewerkerId !=0){ // editing exising order
+				medewerkerId = de1eMedewerkerId; 
+			} else{
+			medewerkerId = controller.getView().getMainpanel().getMedewerker().getGebruikerId();
+			}
+			
 			// klant
-			klantId = controller.getView().getMainpanel().getOrderPanel().
-					getNieuweOrderPnl().getklantId();
+			klantId = controller.getView().getMainpanel().getOrderPanel().getKlantId();
 
 			// Product A id en aantal
 			subOrderPnlIndex = 0;
 			indexProd = controller.getView().getMainpanel().getOrderPanel().
-					getNieuweOrderPnl().getSubOrderPanel(subOrderPnlIndex).getProductIndex();
+					getSubOrderPanel(subOrderPnlIndex).getProductIndex();
 			
 			productExists = (indexProd>=0);
 			if (productExists){
 				idProdA = controller.getView().getMainpanel().getOrderPanel().
-						getNieuweOrderPnl().getProductList().get(indexProd).getProductId();
+						getProductList().get(indexProd).getProductId();
 		
 				aantalProdA = controller.getView().getMainpanel().getOrderPanel().
-						getNieuweOrderPnl().getSubOrderPanel(subOrderPnlIndex).getAantal();
+						getSubOrderPanel(subOrderPnlIndex).getAantal();
 			} else {
 				idProdA = 0;
 				aantalProdA = 0;
@@ -63,15 +85,15 @@ public class OrderCompleetListener implements ActionListener {
 			// Product B id en aantal
 			subOrderPnlIndex = 1;
 			indexProd = controller.getView().getMainpanel().getOrderPanel().
-					getNieuweOrderPnl().getSubOrderPanel(subOrderPnlIndex).getProductIndex();
+					getSubOrderPanel(subOrderPnlIndex).getProductIndex();
 			
 			productExists = (indexProd>=0);
 			if (productExists){
 				idProdB = controller.getView().getMainpanel().getOrderPanel().
-						getNieuweOrderPnl().getProductList().get(indexProd).getProductId();
+						getProductList().get(indexProd).getProductId();
 		
 				aantalProdB = controller.getView().getMainpanel().getOrderPanel().
-						getNieuweOrderPnl().getSubOrderPanel(subOrderPnlIndex).getAantal();
+						getSubOrderPanel(subOrderPnlIndex).getAantal();
 			} else {
 				idProdB = 0;
 				aantalProdB = 0;
@@ -80,15 +102,15 @@ public class OrderCompleetListener implements ActionListener {
 			// Product C id en aantal
 			subOrderPnlIndex = 2;
 			indexProd = controller.getView().getMainpanel().getOrderPanel().
-					getNieuweOrderPnl().getSubOrderPanel(subOrderPnlIndex).getProductIndex();
+					getSubOrderPanel(subOrderPnlIndex).getProductIndex();
 			
 			productExists = (indexProd>=0);
 			if (productExists){
 				idProdC = controller.getView().getMainpanel().getOrderPanel().
-						getNieuweOrderPnl().getProductList().get(indexProd).getProductId();
+						getProductList().get(indexProd).getProductId();
 		
 				aantalProdC = controller.getView().getMainpanel().getOrderPanel().
-						getNieuweOrderPnl().getSubOrderPanel(subOrderPnlIndex).getAantal();
+						getSubOrderPanel(subOrderPnlIndex).getAantal();
 			} else {
 				idProdC = 0;
 				aantalProdC = 0;
@@ -96,12 +118,13 @@ public class OrderCompleetListener implements ActionListener {
 			
 			// totaal bedrag
 			BigDecimal totaalBedrag = controller.getView().getMainpanel().getOrderPanel().
-					getNieuweOrderPnl().SumSubtotalen();
+					SumSubtotalen();
 	
 			
 			Order tempOrder = new Order.OrderBuilder()
 					
-					.medewerkerId	(1)
+					.orderId		(orderId)
+					.medewerkerId	(medewerkerId)
 					.orderDatum		(sqlDate)
 					.klantId		(klantId)
 					.productA_Id	(idProdA)
@@ -114,12 +137,12 @@ public class OrderCompleetListener implements ActionListener {
 					.build();
 			
 			
-			
 			if(totaalBedrag.doubleValue() >0){
-			 controller.getView().getMainpanel().getOrderPanel().setOrderCard("overzOrdersPnl");
+			 controller.getView().getMainpanel().getOrderPanel().setCard("overzichtsPanel");
 			 // send Order to Database  ------------
 			 controller.sendOrdertoDB(tempOrder);
-		
+			 controller.getView().getMainpanel().getOrderPanel().useUpdateBtn();
+			
 			}
 			
 		} catch (Exception e1) {
@@ -128,4 +151,4 @@ public class OrderCompleetListener implements ActionListener {
 
 	}
 
-} // end NieuweOrderListener inner class
+}

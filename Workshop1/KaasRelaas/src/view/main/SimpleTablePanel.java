@@ -8,8 +8,10 @@ import java.awt.Font;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
@@ -71,9 +73,10 @@ public class SimpleTablePanel extends JPanel implements TableCellRenderer {
 			}
 		}
 		// render the table
-		table.setDefaultRenderer(Object.class, this); // use overridden method
-														// below
+		table.setDefaultRenderer(Object.class, this); // use overridden method											// below
 		table.setDefaultEditor(Object.class, null);
+		
+		
 	}
 	
 
@@ -104,8 +107,13 @@ public class SimpleTablePanel extends JPanel implements TableCellRenderer {
 		scroll.setVisible(false);
 		scroll = new JScrollPane(table);
 		scroll.setPreferredSize(new Dimension(width, height));
+		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scroll.setVisible(true);
 		add(scroll);
+		
+		// auto scroll to maximum (bottom)
+		JScrollBar vertical = scroll.getVerticalScrollBar();
+		vertical.setValue( vertical.getMaximum() );
 		
 	}
 
@@ -113,6 +121,10 @@ public class SimpleTablePanel extends JPanel implements TableCellRenderer {
 	public void setPaneWidth(int width) {
 		this.width = width;
 		scroll.setPreferredSize(new Dimension(width, height));
+	}
+	
+	public JTable getTable(){
+		return table;
 	}
 
 }

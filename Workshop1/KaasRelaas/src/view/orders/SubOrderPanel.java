@@ -32,11 +32,11 @@ public class SubOrderPanel extends JPanel {
 	private List<String> productOptions;
 	private List<BigDecimal> productPrijzen = new ArrayList<BigDecimal>();
 	private BigDecimal prijs;
-	private NieuweOrderPanel nieuweOrderPanel;
+	private OrdersPanel nieuweOrderPanel;
 	
 	
 
-	public SubOrderPanel(NieuweOrderPanel nieuweOrderPanel, List<String> productOptions, List<BigDecimal> productPrijzen) {
+	public SubOrderPanel(OrdersPanel nieuweOrderPanel, List<String> productOptions, List<BigDecimal> productPrijzen) {
 		this.nieuweOrderPanel = nieuweOrderPanel;
 		this.productOptions = productOptions;
 		this.productPrijzen = productPrijzen;
@@ -208,9 +208,16 @@ public class SubOrderPanel extends JPanel {
 		subtotaalTextField.setText(text);
 	}
 
+	public void setProductChoice(int index) {
+		productComboBox.setSelectedIndex(index);
+	}
 
 	public String getProductChoice() {
 		return (String) productComboBox.getSelectedItem();
+	}
+	
+	public void setAantal(int i) {
+		aantalTextField.setText(new Integer(i).toString());
 	}
 
 	public int getAantal() {

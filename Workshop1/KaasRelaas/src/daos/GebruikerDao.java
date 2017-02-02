@@ -20,15 +20,14 @@ public class GebruikerDao {
 
 	}
 
-	public List<Gebruiker> getAllKlantenByType(String type) throws Exception {
+	public List<Gebruiker> getAllGebruikersByType(GebruikerType type) throws Exception {
 		List<Gebruiker> gebruikerList = new ArrayList<>();
 
 		try (
 			Statement myStmt = myConn.createStatement();
 			ResultSet myRs = myStmt.executeQuery(
-			 "select * from gebruikers where gebruiker_type = \"" + type + "\"")
+			 "select * from gebruikers where gebruiker_type = \"" + type.toString() + "\"")
 			){
-
 			while (myRs.next()) {
 				Gebruiker tempGebruiker = convertRowToGebruiker(myRs);
 				gebruikerList.add(tempGebruiker);
@@ -76,6 +75,26 @@ public class GebruikerDao {
 				.build();
 
 		return tempGebruiker;
+	}
+
+	public Gebruiker getByLogin(String login) {
+		Gebruiker gebruiker = null;
+		
+		try (
+			Statement myStmt = myConn.createStatement();
+			ResultSet myRs = myStmt.executeQuery("select * from gebruikers where gebruiker_login = \"" + login + "\"");
+			){
+		
+			myRs.first();
+			gebruiker = convertRowToGebruiker(myRs);
+			
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		
+		}
+		return gebruiker;
+
 	}
 
 
