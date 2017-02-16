@@ -8,14 +8,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import main.DaoInterface;
 import main.Model;
 
-public class OrderDao {
+public class OrderDao implements DaoInterface<Order>{
 	// fields to update stock numbers in product table in DB
 	private int[] prod_ids = new int[3];
 	private int[] prod_decreases = new int[3];
-//	private int[] prod_old_ids = new int[3];
-//	private int[] prod_old_count = new int[3];
 
 	private Model model;
 	private Connection myConn;
@@ -25,7 +24,7 @@ public class OrderDao {
 		myConn = model.getConnection();
 	}
 
-	public List<Order> getAllOrders() throws Exception {
+	public List<Order> getAll() {
 		List<Order> orderList = new ArrayList<>();
 
 		try (Statement myStmt = myConn.createStatement();
@@ -42,22 +41,22 @@ public class OrderDao {
 		return orderList;
 	}
 
-	public void saveOrUpdate(Order order) {
+//	public void saveOrUpdate(Order order) {
+//
+//		if (order.getId() == 0) {
+//			saveNew(order);
+//		} else {
+//			update(order);
+//		}
+//	}
 
-		if (order.getOrderId() == 0) {
-			createNewOrder(order);
-		} else {
-			updateOrder(order);
-		}
-	}
-
-	private void createNewOrder(Order order) {
+	public void saveNew(Order order) {
 
 		try (Statement myStmt = myConn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
 				ResultSet myRs = myStmt.executeQuery("select * from bestellingen")) {
 
 			myRs.moveToInsertRow();
-			orderToResultSet(myRs, order);
+			objectToResultSet(myRs, order);
 			myRs.insertRow();
 			updateVoorraad();
 
@@ -66,11 +65,11 @@ public class OrderDao {
 		}
 	}
 
-	private void updateOrder(Order order) {
+	public void update(Order order) {
 
 		try (PreparedStatement myStmt = myConn.prepareStatement("select * from bestellingen where bestelling_id =?",
 				ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE)) {
-			myStmt.setInt(1, order.getOrderId());
+			myStmt.setInt(1, order.getId());
 
 			try (ResultSet myRs = myStmt.executeQuery()) {
 				
@@ -82,7 +81,7 @@ public class OrderDao {
 				myRs.updateInt("product_C_id", 0);
 				myRs.updateInt("product_C_aantal", 0);
 
-				orderToResultSet(myRs, order);
+				objectToResultSet(myRs, order);
 				myRs.updateRow();
 				updateVoorraad();
 			}
@@ -111,8 +110,8 @@ public class OrderDao {
 		}
 	}
 
-	private void orderToResultSet(ResultSet myRs, Order order) throws SQLException {
-		System.out.println(order.getProductA_Id());
+	private void objectToResultSet(ResultSet myRs, Order order) throws SQLException {
+	
 		prod_ids[0] = order.getProductA_Id();
 		prod_ids[1] = order.getProductB_Id();
 		prod_ids[2] = order.getProductC_Id();
@@ -163,9 +162,8 @@ public class OrderDao {
 		return tempOrder;
 	}
 
-	public void deleteOrder(int orderId) {
-		System.out.println("Deleting Order : " + orderId);
-	//	------------
+	public void delete(int orderId) {
+	
 		try (PreparedStatement myStmt = myConn.prepareStatement("select * from bestellingen where bestelling_id =?",
 				ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE)) {
 			myStmt.setInt(1, orderId);
@@ -176,13 +174,7 @@ public class OrderDao {
 				restoreOldAmounts(myRs);
 				myRs.deleteRow();
 			}
-		
-	//	-----------
-//
-//		try (PreparedStatement myStst = myConn.prepareStatement("DELETE FROM bestellingen WHERE bestelling_id = ?");) {
-//
-//			myStst.setInt(1, orderId);
-//			myStst.executeUpdate();
+	
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -197,5 +189,11 @@ public class OrderDao {
 			}
 		}
 	}
+
+
+
+
+	
+
 
 }

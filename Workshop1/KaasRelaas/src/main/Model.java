@@ -8,15 +8,18 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import gebruiker.Gebruiker;
 import gebruiker.GebruikerDao;
 import order.OrderDao;
+import order.Order;
+import product.Product;
 import product.ProductDao;
 
 public class Model {
 
-	private OrderDao orderDao;
-	private ProductDao productDao;
-	private GebruikerDao gebruikerDao;
+	private DaoInterface<Order> orderDao;
+	private DaoInterface<Product> productDao;
+	private DaoInterface<Gebruiker> gebruikerDao;
 	private Connection myConn;
 
 	public void startConnection() {
@@ -40,8 +43,7 @@ public class Model {
 		// connect to database
 		try {
 			myConn = DriverManager.getConnection(dburl, props);
-			System.out.println("Connected to DataBase");
-			orderDao = new OrderDao(myConn);
+			orderDao = new OrderDao(this);
 			productDao = new ProductDao(myConn);
 			gebruikerDao = new GebruikerDao(myConn);
 
@@ -54,42 +56,27 @@ public class Model {
 
 		if (myConn != null) {
 			myConn.close();
-			System.out.println("Connection to DataBase closed");
+			KaasAppMain.logger.info("Connection to DataBase closed");
 		}
 	}
 
 	// getter and setters
 
 	public GebruikerDao getGebruikerDao() {
-		return gebruikerDao;
+		return (GebruikerDao)gebruikerDao;
 	}
 
 	public ProductDao getProductDao() {
-		return productDao;
+		return (ProductDao) productDao;
 	}
 
 	public OrderDao getOrderDao() {
-		return orderDao;
+		return (OrderDao) orderDao;
+	}
+	
+	public Connection getConnection() {
+		return myConn;
 	}
 
-	// main method for testing
-	// public static void main(String[] args) throws Exception {
-	//
-	// Model dao = new Model();
-	//
-	// dao.orderDao = new OrderDao(dao.myConn);
-	// System.out.println(dao.orderDao.getAllOrders());
-	// System.out.println(dao.orderDao.getOrdersData());
-	//
-	// dao.gebruikerDao = new GebruikerDao(dao.myConn);
-	// System.out.println(dao.gebruikerDao.getGebruikerById(4));
-	// System.out.println(dao.gebruikerDao.getGebruikerById(3));
-	// System.out.println(dao.gebruikerDao.getGebruikerById(2));
-	// System.out.println(dao.gebruikerDao.getGebruikerById(1));
-	//
-	// System.out.println(dao.gebruikerDao.getAllKlantenByType("Klant"));
-	// System.out.println(dao.gebruikerDao.getAllKlantenByType("Medewerker"));
-	//
-	// }
 
 }

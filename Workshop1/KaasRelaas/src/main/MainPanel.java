@@ -1,4 +1,4 @@
-package view.main;
+package main;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -7,27 +7,32 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.SpringLayout;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
-import model.Gebruiker;
-import view.gebruikers.KlantenPanel;
-import view.gebruikers.MedewerkersPanel;
-import view.orders.OrdersPanel;
-import view.products.ProductenPanel;
+import gebruiker.Gebruiker;
+import gebruiker.GebruikerToegang;
+import gebruiker.KlantenPanel;
+import gebruiker.MedewerkersPanel;
+import order.OrdersPanel;
+import product.ProductenPanel;
 
 
 public class MainPanel extends JPanel{
 
 	private static final long serialVersionUID = 1L;
-
+	
+	private MainController controller;
 	private OrdersPanel ordersPanel;
 	private KlantenPanel klantenPanel;
+	private ProductenPanel productenPanel;
+	private MedewerkersPanel medewerkersPanel;
 	private Gebruiker medewerker;
 	private JTabbedPane tabbedPane;
 	private JButton logoutButton;
-	
 
-	public MainPanel() {
-			
+	public MainPanel(MainController orderController) {
+		this.controller = orderController;
 		initialize();
 	}
 
@@ -44,20 +49,31 @@ public class MainPanel extends JPanel{
 		add(tabbedPane);
 		
 	
-		ordersPanel = new OrdersPanel();
+		ordersPanel = new OrdersPanel(controller);
 		tabbedPane.addTab(" Orders         ", null, ordersPanel, null);
 		
 		
-		klantenPanel = new KlantenPanel();
+		klantenPanel = new KlantenPanel(controller);
 		tabbedPane.addTab(" Klanten        ", null, klantenPanel, null);
 
 		
-		ProductenPanel productenPanel = new ProductenPanel();
+		productenPanel = new ProductenPanel(controller);
 		tabbedPane.addTab(" Producten    ", null, productenPanel, null);
 		
 		
-		MedewerkersPanel medewerkersPanel = new MedewerkersPanel();
+		medewerkersPanel = new MedewerkersPanel(controller);
 		tabbedPane.addTab(" Medewerkers  ", null, medewerkersPanel, null);
+		
+		tabbedPane.addChangeListener(new ChangeListener() {
+
+              public void stateChanged(ChangeEvent e) {
+                  if (e.getSource() instanceof JTabbedPane) {
+                      JTabbedPane pane = (JTabbedPane) e.getSource();
+                      int panelIndex= pane.getSelectedIndex();
+                      updatePanel(panelIndex);
+                  }
+              }
+          });
 		
 	
 		logoutButton = new JButton("Logout");
@@ -68,15 +84,11 @@ public class MainPanel extends JPanel{
 		logoutButton.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		add(logoutButton);
 		
-			
-		
-	}
-	
-	public void addLogoutListener(View theView){
 		logoutButton.addActionListener(e -> {
 			medewerker = null;
 			tabbedPane.setSelectedIndex(0);
-			theView.setCard("loginPanel");
+			controller.getView().setCard("loginPanel");
+			controller.closeConnection();
 						
 		});
 	}
@@ -85,18 +97,56 @@ public class MainPanel extends JPanel{
 	public OrdersPanel getOrderPanel(){
 		return ordersPanel;
 	}
+	public ProductenPanel getProductenPanel(){
+		return productenPanel;
+	}
 	
 	public KlantenPanel getKlantenPanel(){
 		return klantenPanel;
 	}
 	
+	public MedewerkersPanel getMedewerkersPanel(){
+		return medewerkersPanel;
+	}
+	
 	public void setMedewerker(Gebruiker medewerker){
 		this.medewerker = medewerker;
+		if(medewerker.getGebruikerToegang()==GebruikerToegang.ADMIN){
+			productenPanel.nieuwButton.setEnabled(true);
+			tabbedPane.setEnabledAt(3, true);
+		}else{
+			productenPanel.nieuwButton.setEnabled(false);
+			tabbedPane.setEnabledAt(3, false);
+		}
 	}
 	
 	public Gebruiker getMedewerker(){
 		return medewerker;
 	}
+	
+	private void updatePanel(int panelIndex) {
+
+		switch (panelIndex){
+		default:
+			break;
+		case 0:
+			ordersPanel.updateAction();
+			break;
+		case 1:
+			klantenPanel.updateAction();
+			break;
+		case 2:
+			productenPanel.updateAction();
+			break;
+		case 3:
+			medewerkersPanel.updateAction();
+			break;
+		}
+			
+		
+	}
+
+	
 	
 
 }

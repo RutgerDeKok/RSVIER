@@ -1,8 +1,10 @@
-package model;
+package product;
 
 import java.math.BigDecimal;
 
-public class Product {
+import main.idGetter;
+
+public class Product implements idGetter{
 	
 	private final int productId;
 	private final String productNaam;
@@ -17,10 +19,10 @@ public class Product {
 		this.aantalVoorraad = builder.getAantalVoorraad();
 	}
 	
-	public int getProductId() {
+	public int getId() {
 		return productId;
 	}
-	public String getProductNaam() {
+	public String getNaam() {
 		return productNaam;
 	}
 	public BigDecimal getPrijs() {

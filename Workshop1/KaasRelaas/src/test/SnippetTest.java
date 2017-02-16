@@ -1,6 +1,6 @@
 package test;
 
-import controller.Password;
+import main.Password;
 
 public class SnippetTest {
 

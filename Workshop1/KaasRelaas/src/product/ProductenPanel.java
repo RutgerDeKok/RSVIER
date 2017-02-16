@@ -18,6 +18,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import main.GenericPanel;
+import main.KaasAppMain;
 import main.MainController;
 import main.SimpleTablePanel;
 
@@ -30,7 +31,7 @@ public class ProductenPanel extends GenericPanel{
 	
 	private MainController controller;
 	private List<Product> productList;
-	private int productId = 0;
+	private int productId;
 	
 	private JTextField naamTextField;
 	private JTextField prijsTextField;
@@ -213,7 +214,7 @@ public class ProductenPanel extends GenericPanel{
 	public void updateAction() {
 		try {
 			// data ophalen uit DB via DAO
-			 productList = controller.getModel().getProductDao().getAllProducten();
+			 productList = controller.getModel().getProductDao().getAll();
 			
 			// List converteren naar String[][] voor tabel in view
 			String[][] data;
@@ -237,15 +238,15 @@ public class ProductenPanel extends GenericPanel{
 
 	@Override
 	public void editRow(int row) {
-		System.out.println("editRow method start");
+		KaasAppMain.logger.debug("ProductPanel editRow method start");
 		// get product
 		Product product = productList.get(row);
 		
 		refreshNewItempPnl();
 		
-		productId = product.getProductId();
+		productId = product.getId();
 		
-		naamTextField.setText(product.getProductNaam());
+		naamTextField.setText(product.getNaam());
 		prijsTextField.setText(product.getPrijs().toString());
 		aantVoorraadtextField.setText(Integer.toString(product.getAantalVoorraad()));
 

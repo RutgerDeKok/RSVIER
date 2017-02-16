@@ -1,9 +1,11 @@
-package model;
+package gebruiker;
 
-public class Gebruiker {
+import main.idGetter;
+
+public class Gebruiker implements idGetter{
 
 
-		private final int gebruikerId;
+		private final int id;
 		private final GebruikerType gebruikerType;
 		private final String voornaam;
 		private final String tussenVoegsel;
@@ -15,13 +17,13 @@ public class Gebruiker {
 		private final String woonplaats;
 		private final String phone;
 		private final GebruikerToegang gebruikerToegang;
-		private final String gebruikerLogin;
-		private final String gebruikerPass;
+		private final String login;
+		private final String pass;
 		
 		// constructor
 		public Gebruiker(GebruikerBuilder builder){
 			
-		this.gebruikerId = 		builder.getGebruikerId();
+		this.id = 				builder.getGebruikerId();
 		this.gebruikerType = 	builder.getGebruikerType();
 		this.voornaam = 		builder.getVoorNaam();
 		this.tussenVoegsel = 	builder.getTussenVoegsel();
@@ -33,8 +35,8 @@ public class Gebruiker {
 		this.woonplaats = 		builder.getWoonplaats();
 		this.phone = 			builder.getPhone();
 		this.gebruikerToegang = builder.getGebruikerToegang();
-		this.gebruikerLogin = 	builder.getGebruikerLogin();
-		this.gebruikerPass = 	builder.getGebruikerPass();
+		this.login = 			builder.getGebruikerLogin();
+		this.pass = 			builder.getGebruikerPass();
 		}
 		
 		
@@ -43,26 +45,26 @@ public class Gebruiker {
 			return String.format("id=%s, type=%s, vn=%s, tv=%s, an=%s "+"\n"+
 			" straat=%s, nr=%s, tvg=%s, pc=%s, plaats=%s"+"\n"+" " +
 			 "phone=%s , toegang=%s, login=%s, pass=%s"+"\n",
-							gebruikerId, gebruikerType, voornaam, tussenVoegsel, achternaam, straat, huisNummer,
-							huisnrToevoeging, postcode, woonplaats, phone, gebruikerToegang,
-							gebruikerLogin, gebruikerPass);
+			id, gebruikerType, voornaam, tussenVoegsel, achternaam, straat, huisNummer,
+			huisnrToevoeging, postcode, woonplaats, phone, gebruikerToegang,
+			login, pass);
 		}
 			
 			// getters 
 
-		public int getGebruikerId() {
-			return gebruikerId;
+		public int getId() {
+			return id;
 		}
 		public GebruikerType getGebruikerType() {
 			return gebruikerType;
 		}
-		public String getVoorNaam() {
+		public String getVoornaam() {
 			return voornaam;
 		}
 		public String getTussenVoegsel() {
 			return tussenVoegsel;
 		}
-		public String getAchterNaam() {
+		public String getAchternaam() {
 			return achternaam;
 		}
 		public String getStraat() {
@@ -80,17 +82,17 @@ public class Gebruiker {
 		public String getWoonplaats() {
 			return woonplaats;
 		}
-		public String getPhone() {
+		public String getTelefoon() {
 			return phone;
 		}
 		public GebruikerToegang getGebruikerToegang() {
 			return gebruikerToegang;
 		}
-		public String getGebruikerLogin() {
-			return gebruikerLogin;
+		public String getLogin() {
+			return login;
 		}
-		public String getGebruikerPass() {
-			return gebruikerPass;
+		public String getPass() {
+			return pass;
 		}
 		
 		
@@ -101,7 +103,7 @@ public class Gebruiker {
 			
 			private int gebruikerId;
 			private GebruikerType gebruikerType;
-			private String voornaam;
+			protected String voornaam;
 			private String tussenVoegsel;
 			private String achternaam;
 			private String straat;
@@ -162,24 +164,24 @@ public class Gebruiker {
 			
 			
 			//setters
-			public GebruikerBuilder gebruikerId(int gebruikerId) {
-				this.gebruikerId = gebruikerId;
+			public GebruikerBuilder id(int id) {
+				this.gebruikerId = id;
 				return this;
 			}
 			public GebruikerBuilder gebruikerType(GebruikerType gebruikerType) {
 				this.gebruikerType = gebruikerType;
 				return this;
 			}
-			public GebruikerBuilder voorNaam(String voorNaam) {
-				this.voornaam = voorNaam;
+			public GebruikerBuilder voornaam(String voornaam) {
+				this.voornaam = voornaam;
 				return this;
 			}
 			public GebruikerBuilder tussenVoegsel(String tussenVoegsel) {
 				this.tussenVoegsel = tussenVoegsel;
 				return this;
 			}
-			public GebruikerBuilder achterNaam(String achterNaam) {
-				this.achternaam = achterNaam;
+			public GebruikerBuilder achternaam(String achternaam) {
+				this.achternaam = achternaam;
 				return this;
 			}
 			public GebruikerBuilder straat(String straat) {
@@ -210,12 +212,12 @@ public class Gebruiker {
 				this.gebruikerToegang = gebruikerToegang;
 				return this;
 			}
-			public GebruikerBuilder gebruikerLogin(String gebruikerLogin) {
-				this.gebruikerLogin = gebruikerLogin;
+			public GebruikerBuilder login(String login) {
+				this.gebruikerLogin = login;
 				return this;
 			}
-			public GebruikerBuilder gebruikerPass(String gebruikerPass) {
-				this.gebruikerPass = gebruikerPass;
+			public GebruikerBuilder pass(String pass) {
+				this.gebruikerPass = pass;
 				return this;
 			}
 			

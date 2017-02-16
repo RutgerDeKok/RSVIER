@@ -1,12 +1,14 @@
-package model;
+package order;
 
 import java.math.BigDecimal;
 import java.sql.Date;
 
+import main.idGetter;
 
-public class Order {
+
+public class Order implements idGetter {
 	
-	private final int orderId;
+	private final int id;
 	private final Date orderDatum;
 	private final int medewerkerId;
 	private final int klantId;
@@ -22,7 +24,7 @@ public class Order {
 	public Order(OrderBuilder builder){
 	
 		
-		this.orderId = builder.getOrderId();
+		this.id = builder.getOrderId();
 		this.orderDatum = builder.getOrderDatum();
 		this.medewerkerId = builder.getMedewerkerId();
 		this.klantId = builder.getKlantId();
@@ -40,15 +42,15 @@ public class Order {
 	public String toString() {
 		int totaalProducten = productA_aantal +productB_aantal + productC_aantal;
 		return String.format("id=%s, datum=%s, medew=%s, klant=%s, totProd=%s, totBedrag=%s "+"\n",
-						orderId, orderDatum, medewerkerId, klantId, totaalProducten, totaalBedrag);
+						id, orderDatum, medewerkerId, klantId, totaalProducten, totaalBedrag);
 	}
 	
 	
 	
 	// getters
 
-	public int getOrderId() {
-		return orderId;
+	public int getId() {
+		return id;
 	}
 	public Date getOrderDatum() {
 		return orderDatum;

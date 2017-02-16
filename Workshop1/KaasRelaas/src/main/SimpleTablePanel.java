@@ -1,4 +1,4 @@
-package view.main;
+package main;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -8,7 +8,6 @@ import java.awt.Font;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
@@ -64,6 +63,11 @@ public class SimpleTablePanel extends JPanel implements TableCellRenderer {
 		table.getTableHeader().setFont(new Font("Tahoma", Font.BOLD, 17));
 		table.setRowHeight(table.getRowHeight() + 10);
 
+		//format header
+		((DefaultTableCellRenderer)table.getTableHeader().getDefaultRenderer())
+	    .setHorizontalAlignment(JLabel.LEADING);
+		table.getTableHeader().setPreferredSize(new Dimension(width,30));
+
 		table.setFont(new Font("Courier", Font.PLAIN, 17));
 
 		if (columnWidths != null) {
@@ -112,8 +116,9 @@ public class SimpleTablePanel extends JPanel implements TableCellRenderer {
 		add(scroll);
 		
 		// auto scroll to maximum (bottom)
-		JScrollBar vertical = scroll.getVerticalScrollBar();
-		vertical.setValue( vertical.getMaximum() );
+//		JScrollBar vertical = scroll.getVerticalScrollBar();
+//		vertical.setValue( vertical.getMaximum());
+		table.scrollRectToVisible(table.getCellRect(table.getRowCount()-1, table.getColumnCount(), true));
 		
 	}
 
@@ -126,5 +131,7 @@ public class SimpleTablePanel extends JPanel implements TableCellRenderer {
 	public JTable getTable(){
 		return table;
 	}
+	
+	
 
 }

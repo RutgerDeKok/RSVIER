@@ -29,20 +29,19 @@ public class LoginPanel extends JPanel {
 		JPanel titelPanel = new JPanel();
 		titelPanel.setBackground(new Color(255, 204, 102));
 		FlowLayout fl_titelCardPanel = (FlowLayout) titelPanel.getLayout();
-		fl_titelCardPanel.setVgap(40);
+		fl_titelCardPanel.setVgap(55);
 
 		JLabel titelLabel = new JLabel("Boer Piets Kaas Handel");
-		titelLabel.setFont(new Font("Tahoma", Font.PLAIN, 32));
+		titelLabel.setFont(new Font("Tahoma", Font.PLAIN, 38));
 		titelPanel.add(titelLabel);
 		add(titelPanel);
 
 		JPanel loginNaamPanel = new JPanel();
-		FlowLayout fl_loginNaamPanel = (FlowLayout) loginNaamPanel.getLayout();
+		loginNaamPanel.setBackground(new Color(238, 232, 170));
+		loginNaamPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 45));
 		JLabel nameLabel = new JLabel("Login Naam  ");
 		nameLabel.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		loginNaamPanel.add(nameLabel);
-		fl_loginNaamPanel.setVgap(50);
-		fl_loginNaamPanel.setAlignOnBaseline(true);
 
 		loginNaamTextField = new JTextField();
 		loginNaamTextField.setFont(new Font("Tahoma", Font.PLAIN, 24));
@@ -51,7 +50,8 @@ public class LoginPanel extends JPanel {
 		add(loginNaamPanel);
 
 		JPanel passwordPanel = new JPanel();
-		passwordPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 50));
+		passwordPanel.setBackground(new Color(238, 232, 170));
+		passwordPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 45));
 		JLabel passwordLabel = new JLabel("Password    ");
 		passwordLabel.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		passwordPanel.add(passwordLabel);
@@ -65,7 +65,7 @@ public class LoginPanel extends JPanel {
 		JPanel okButtonPanel = new JPanel();
 		okButtonPanel.setBackground(new Color(255, 204, 102));
 		FlowLayout fl_okButtonPanel = (FlowLayout) okButtonPanel.getLayout();
-		fl_okButtonPanel.setVgap(20);
+		fl_okButtonPanel.setVgap(50);
 
 		okButton = new JButton("    OK    ");
 		okButton.setFont(new Font("Tahoma", Font.PLAIN, 24));
@@ -81,23 +81,31 @@ public class LoginPanel extends JPanel {
 			
 			String login = loginNaamTextField.getText();
 			Gebruiker medewerker = controller.getModel().getGebruikerDao().getByLogin(login);
+			
 			String stored;
 			
 			
 			
 			try {
 				if (medewerker != null && medewerker.getGebruikerType() != GebruikerType.KLANT){
-					 stored = medewerker.getGebruikerPass().toString();
+					 stored = medewerker.getPass().toString();
 		
 					if (Password.check(passwordField.getPassword(), stored)) {
-						System.out.println("password ok");
+//						System.out.println("password ok");
+						KaasAppMain.logger.info("logged in by : "+medewerker.getId()+" " +medewerker.getVoornaam()+" "+medewerker.getTussenVoegsel()+" " +medewerker.getAchternaam());
 						controller.getView().getMainpanel().setMedewerker(medewerker);
 						loginNaamTextField.setText("");
 						passwordField.setText("");
-						controller.getView().setCard("mainPanel");
+					
+						controller.getView().getMainpanel().getKlantenPanel().
+						updateAction();
+						controller.getView().getMainpanel().getProductenPanel().
+						updateAction();
+						controller.getView().getMainpanel().getMedewerkersPanel().
+						updateAction();
 						controller.getView().getMainpanel().getOrderPanel().
 						updateAction();
-					
+						controller.getView().setCard("mainPanel");
 					}else{
 						controller.closeConnection();
 					}
@@ -105,6 +113,7 @@ public class LoginPanel extends JPanel {
 					controller.closeConnection();
 				}
 			} catch (Exception e1) {
+				KaasAppMain.logger.info("failed login, no stored pw, attempt by: "+loginNaamTextField.getText());
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 				controller.closeConnection();

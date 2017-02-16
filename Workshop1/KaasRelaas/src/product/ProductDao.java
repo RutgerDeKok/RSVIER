@@ -8,7 +8,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductDao {
+import main.DaoInterface;
+import main.KaasAppMain;
+
+
+public class ProductDao implements DaoInterface<Product> {
 
 	private Connection myConn;
 
@@ -17,7 +21,8 @@ public class ProductDao {
 
 	}
 
-	public List<Product> getAllProducten() throws Exception {
+	@Override
+	public List<Product> getAll() {
 		List<Product> productList = new ArrayList<>();
 
 		try (Statement myStmt = myConn.createStatement();
@@ -59,7 +64,7 @@ public class ProductDao {
 	}
 
 	public void updateVoorraad(int prod_id, int prod_decrease) {
-		System.out.println(
+		KaasAppMain.logger.debug(
 				"updating prod id = " + prod_id + ", dif = " + prod_decrease );
 		;
 		try (PreparedStatement myStmt = myConn.prepareStatement("select * from producten where product_id =?",
@@ -74,7 +79,7 @@ public class ProductDao {
 				voorraad -= prod_decrease;
 				myRs.updateInt("product_op_voorraad", voorraad);
 				myRs.updateRow();
-				System.out.println(
+				KaasAppMain.logger.debug(
 						"updating prod id = " + prod_id + ", dif = " + prod_decrease + ", voorraad = " + voorraad);
 				;
 			}
@@ -85,21 +90,21 @@ public class ProductDao {
 
 	}
 
-	public void saveOrUpdate(Product product) {
-		
-		if (product.getProductId() == 0) {
-			saveNewProduct(product);
-		} else {
-			updateProduct(product);
-		}
-		
-	}
+//	@Override
+//	public void saveOrUpdate(Product product) {
+//		
+//		if (product.getId() == 0) {
+//			saveNew(product);
+//		} else {
+//			update(product);
+//		}
+//	}
 
-	private void updateProduct(Product product) {
+	public void update(Product product) {
 		
 		try (PreparedStatement myStmt = myConn.prepareStatement("select * from producten where product_id =?",
 				ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE)) {
-			myStmt.setInt(1, product.getProductId());
+			myStmt.setInt(1, product.getId());
 
 			try (ResultSet myRs = myStmt.executeQuery()) {
 				
@@ -115,7 +120,8 @@ public class ProductDao {
 		
 	}
 
-	private void saveNewProduct(Product product) {
+	@Override
+	public void saveNew(Product product) {
 	
 		try (Statement myStmt = myConn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
 				ResultSet myRs = myStmt.executeQuery("select * from producten")) {
@@ -134,9 +140,19 @@ public class ProductDao {
 	private void productToResultSet(ResultSet myRs, Product product) throws SQLException {
 //		System.out.println("Running productToResultSet method from productDao, \r Needs to be implemented");
 		
-		myRs.updateString("product_naam", product.getProductNaam());
+		myRs.updateString("product_naam", product.getNaam());
 		myRs.updateInt("product_op_voorraad", product.getAantalVoorraad());
 		myRs.updateBigDecimal("product_prijs", product.getPrijs());
 	}
+
+	
+
+	@Override
+	public void delete(int id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
 
 }

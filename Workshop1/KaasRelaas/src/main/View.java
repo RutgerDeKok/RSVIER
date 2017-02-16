@@ -1,12 +1,10 @@
-package view.main;
+package main;
 
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.util.List;
 
 import javax.swing.JFrame;
 
-import model.Gebruiker;
 
 
 public class View extends JFrame{
@@ -16,11 +14,12 @@ public class View extends JFrame{
 	private LoginPanel loginPanel;
 	private CardLayout mainCardLayout;
 
-	public View() {
-		initialize();
-	}
+//	public View() {
+//		initialize();
+//	}
 
-	private void initialize() {
+//	private void initialize() {
+	public void initialize(MainController controller) {
 
 		mainCardLayout = new CardLayout(0, 0);
 		setTitle("- Boer Piets Kaas Handel -");
@@ -32,16 +31,17 @@ public class View extends JFrame{
 
 		
 
-		mainPanel = new MainPanel();
-		mainPanel.addLogoutListener(this);
+		mainPanel = new MainPanel(controller);
+//		mainPanel.addLogoutListener(this);
 		getContentPane().add(mainPanel, "mainPanel");
 		
 //		mainCardLayout.show(this.getContentPane(), "mainPanel");
 
-	}
-	
-	public void startLoginPanel(){
-		loginPanel = new LoginPanel();
+//	}
+//	
+//	public void startLoginPanel(){
+		
+		loginPanel = new LoginPanel(controller);
 		getContentPane().add(loginPanel, "loginPanel");
 		mainCardLayout.show(this.getContentPane(), "loginPanel");
 		
