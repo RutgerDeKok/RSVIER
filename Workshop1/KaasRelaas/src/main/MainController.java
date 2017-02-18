@@ -22,18 +22,19 @@ public class MainController {
 		theModel = model;
 		theView = view;
 
-		orderController = new OrderController(theView, theModel);
-		gebruikerController = new GebruikerController(theView, theModel);
+		orderController = new OrderController(theModel);
+		gebruikerController = new GebruikerController(theModel);
 		productController = new ProductController(theView, theModel);
 
 		theView.initialize(this);
-
 	}
+
 	
 	public void startConnection(){
 		theModel.startConnection();
 	}
 
+	
 	public void closeConnection(){
 		try {
 			theModel.closeConnection();
@@ -42,8 +43,9 @@ public class MainController {
 		}
 	}
 	
+	
 	// getters
-
+	
 	public Model getModel() {
 		return theModel;
 	}
