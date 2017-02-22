@@ -17,10 +17,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import main.GenericPanel;
+import main.panels.GenericPanel;
 import main.KaasAppMain;
 import main.MainController;
-import main.SimpleTablePanel;
+import main.panels.SimpleTablePanel;
 
 
 
@@ -191,8 +191,8 @@ public class ProductenPanel extends GenericPanel{
 				remove(newItemPanel);
 			
 			createNewItemPanel();
-				
 			this.add(newItemPanel, "NewItemPanel");
+			
 			productId = 0;
 			cardLayout.show(this, "NewItemPanel");
 

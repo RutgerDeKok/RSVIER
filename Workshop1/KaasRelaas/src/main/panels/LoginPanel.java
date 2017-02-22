@@ -1,4 +1,4 @@
-package main;
+package main.panels;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -10,8 +10,12 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import connection_pool.Password;
 import gebruiker.Gebruiker;
 import gebruiker.GebruikerType;
+import main.KaasAppMain;
+import main.MainController;
+
 
 public class LoginPanel extends JPanel {
 
@@ -71,10 +75,11 @@ public class LoginPanel extends JPanel {
 		okButton.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		okButtonPanel.add(okButton);
 		add(okButtonPanel);
-//	}
-//
-//	
-//	public void addOkListener(OrderController controller) {
+		addOkListener(controller);
+	}
+
+	
+	private void addOkListener(MainController controller) {
 
 		okButton.addActionListener(e -> {
 			controller.startConnection();
@@ -91,7 +96,7 @@ public class LoginPanel extends JPanel {
 					 stored = medewerker.getPass().toString();
 		
 					if (Password.check(passwordField.getPassword(), stored)) {
-//						System.out.println("password ok");
+
 						KaasAppMain.logger.info("logged in by : "+medewerker.getId()+" " +medewerker.getVoornaam()+" "+medewerker.getTussenVoegsel()+" " +medewerker.getAchternaam());
 						controller.getView().getMainpanel().setMedewerker(medewerker);
 						loginNaamTextField.setText("");

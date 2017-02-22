@@ -1,8 +1,7 @@
 package gebruiker;
 
-import main.idGetter;
 
-public class Gebruiker implements idGetter{
+public class Gebruiker {
 
 
 		private final int id;

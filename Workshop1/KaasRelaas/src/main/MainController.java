@@ -24,7 +24,7 @@ public class MainController {
 
 		orderController = new OrderController(theModel);
 		gebruikerController = new GebruikerController(theModel);
-		productController = new ProductController(theView, theModel);
+		productController = new ProductController(theModel);
 
 		theView.initialize(this);
 	}

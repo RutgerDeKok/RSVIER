@@ -3,10 +3,9 @@ package order;
 import java.math.BigDecimal;
 import java.sql.Date;
 
-import main.idGetter;
 
 
-public class Order implements idGetter {
+public class Order {
 	
 	private final int id;
 	private final Date orderDatum;

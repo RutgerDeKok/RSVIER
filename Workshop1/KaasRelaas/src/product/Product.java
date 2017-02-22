@@ -2,9 +2,7 @@ package product;
 
 import java.math.BigDecimal;
 
-import main.idGetter;
-
-public class Product implements idGetter{
+public class Product {
 	
 	private final int productId;
 	private final String productNaam;

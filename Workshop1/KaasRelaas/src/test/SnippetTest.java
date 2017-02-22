@@ -1,6 +1,6 @@
 package test;
 
-import main.Password;
+import connection_pool.Password;
 
 public class SnippetTest {
 

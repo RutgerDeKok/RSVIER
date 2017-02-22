@@ -1,4 +1,4 @@
-package main;
+package main.panels;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -12,9 +12,10 @@ import javax.swing.event.ChangeListener;
 
 import gebruiker.Gebruiker;
 import gebruiker.GebruikerToegang;
-import gebruiker.KlantenPanel;
-import gebruiker.MedewerkersPanel;
-import order.OrdersPanel;
+import gebruiker.panels.KlantenPanel;
+import gebruiker.panels.MedewerkersPanel;
+import main.MainController;
+import order.OrderPanel;
 import product.ProductenPanel;
 
 
@@ -23,7 +24,7 @@ public class MainPanel extends JPanel{
 	private static final long serialVersionUID = 1L;
 	
 	private MainController controller;
-	private OrdersPanel ordersPanel;
+	private OrderPanel ordersPanel;
 	private KlantenPanel klantenPanel;
 	private ProductenPanel productenPanel;
 	private MedewerkersPanel medewerkersPanel;
@@ -37,7 +38,9 @@ public class MainPanel extends JPanel{
 	}
 
 	private void initialize() {
-		setBackground(new Color(222, 184, 135));
+//		setBackground(new Color(222, 184, 135)); //koffie
+//		setBackground(new Color(255, 204, 102)); // kaas
+		setBackground(new Color(205, 205, 200)); // lichtgrijs
 		SpringLayout springLayoutMain = new SpringLayout();
 		setLayout(springLayoutMain);
 		
@@ -49,7 +52,7 @@ public class MainPanel extends JPanel{
 		add(tabbedPane);
 		
 	
-		ordersPanel = new OrdersPanel(controller);
+		ordersPanel = new OrderPanel(controller);
 		tabbedPane.addTab(" Orders         ", null, ordersPanel, null);
 		
 		
@@ -94,7 +97,7 @@ public class MainPanel extends JPanel{
 	}
 		
 	
-	public OrdersPanel getOrderPanel(){
+	public OrderPanel getOrderPanel(){
 		return ordersPanel;
 	}
 	public ProductenPanel getProductenPanel(){

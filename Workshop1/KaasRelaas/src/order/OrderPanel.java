@@ -8,7 +8,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -24,13 +23,14 @@ import javax.swing.SwingConstants;
 
 import gebruiker.Gebruiker;
 import gebruiker.GebruikerType;
-import main.GenericPanel;
+import main.panels.GenericPanel;
 import main.KaasAppMain;
 import main.MainController;
-import main.SimpleTablePanel;
+import main.panels.SimpleTablePanel;
+import order.OrderController.ListWrapper;
 import product.Product;
 
-public class OrdersPanel extends GenericPanel {
+public class OrderPanel extends GenericPanel {
 
 	private MainController controller;
 	private JComboBox<String> klantComboBox;
@@ -40,6 +40,7 @@ public class OrdersPanel extends GenericPanel {
 
 	private List<Gebruiker> klantList; // list hold a Gebruiker for every klant in DB
 	private List<Product> productList; // list hold a Product for every product in DB
+	
 	private List<String> klantOptions; // List hold a String for every klant used by comboBox
 	private List<String> productOptions; // List hold a String for every product used by comboBox
 	private List<BigDecimal> productPrijzen; // List hold a the price of every product used by TextField
@@ -51,7 +52,7 @@ public class OrdersPanel extends GenericPanel {
 
 	private static final long serialVersionUID = 1L;
 
-	public OrdersPanel(MainController controller) {
+	public OrderPanel(MainController controller) {
 		this.controller = controller;
 		String[][] newData = { { "-", "-", "-", "-", "-", "-", "-Edit-" } };
 		String[] newNames = { "ID", "Datum", "Mw Id", "Klant", "Aantal", "Totaal", "" };
@@ -74,6 +75,7 @@ public class OrdersPanel extends GenericPanel {
 
 		newItemPanel = new JPanel();
 		newItemPanel.setLayout(new BoxLayout(newItemPanel, BoxLayout.Y_AXIS));
+		Font plain20 = new Font("Tahoma", Font.PLAIN, 20);
 
 		// title panel
 		JPanel titelPanel = new JPanel();
@@ -99,7 +101,7 @@ public class OrdersPanel extends GenericPanel {
 		klantKiesPanel.add(klantLabel);
 
 		klantComboBox = new JComboBox<String>();
-		klantComboBox.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		klantComboBox.setFont(plain20);
 		klantComboBox.setModel(new DefaultComboBoxModel<String>());
 		for (String s : klantOptions) {
 			klantComboBox.addItem(s.toString());
@@ -127,7 +129,7 @@ public class OrdersPanel extends GenericPanel {
 		gbl_panel.rowWeights = new double[] { 0.0, Double.MIN_VALUE };
 		orderCompleetPanel.setLayout(gbl_panel);
 
-		cancelButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		cancelButton.setFont(plain20);
 		GridBagConstraints gbc_CancelButton = new GridBagConstraints();
 		gbc_CancelButton.fill = GridBagConstraints.HORIZONTAL;
 		gbc_CancelButton.insets = new Insets(10, 10, 0, 10);
@@ -137,7 +139,7 @@ public class OrdersPanel extends GenericPanel {
 		orderCompleetPanel.add(cancelButton, gbc_CancelButton);
 
 		itemCompleteButton.setText("Order Compleet");
-		itemCompleteButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		itemCompleteButton.setFont(plain20);
 		GridBagConstraints gbc_CompleetButton = new GridBagConstraints();
 		gbc_CompleetButton.fill = GridBagConstraints.HORIZONTAL;
 		gbc_CompleetButton.insets = new Insets(10, 20, 0, 5);
@@ -148,7 +150,7 @@ public class OrdersPanel extends GenericPanel {
 		orderCompleetPanel.add(itemCompleteButton, gbc_CompleetButton);
 
 		JLabel OrderTotaalLabel = new JLabel("Order Totaal:  ");
-		OrderTotaalLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		OrderTotaalLabel.setFont(plain20);
 		OrderTotaalLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 		gbc_lblNewLabel.insets = new Insets(10, 10, 0, 5);
@@ -158,7 +160,7 @@ public class OrdersPanel extends GenericPanel {
 		orderCompleetPanel.add(OrderTotaalLabel, gbc_lblNewLabel);
 
 		totaalTextField = new JTextField("0.00");
-		totaalTextField.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		totaalTextField.setFont(plain20);
 		GridBagConstraints gbc_textField = new GridBagConstraints();
 		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textField.gridx = 4;
@@ -168,8 +170,8 @@ public class OrdersPanel extends GenericPanel {
 
 		newItemPanel.add(orderCompleetPanel);
 		
-
-	}
+	}  // end createNewItemPanel()
+	
 	
 	@Override
 	protected void itemCompleteAction() {
@@ -183,7 +185,7 @@ public class OrdersPanel extends GenericPanel {
 			if (newItemPanel != null)
 				remove(newItemPanel);
 
-			fetchDataFromDao();
+			fetchDataFromDaos();
 			createNewItemPanel();
 
 			this.add(newItemPanel, "NewItemPanel");
@@ -229,32 +231,42 @@ public class OrdersPanel extends GenericPanel {
 
 		deleteButton.addActionListener(e -> {
 
-			int p = JOptionPane.showConfirmDialog(null, "Delete Order?", "Delete", JOptionPane.YES_NO_OPTION);
-			if (p == 0) {
+			int confirmation = JOptionPane.showConfirmDialog(null, "Delete Order?", "Delete", JOptionPane.YES_NO_OPTION);
+			if (confirmation == 0) {
 				controller.getModel().getOrderDao().delete(orderId);
 				setCard("overzichtsPanel");
 				updateAction();
-
 			}
 		});
 		deleteButton.setVisible(true);
-
+	}
+	
+	
+	private int getItemIndex(int id) {
+		for (int i = 0; i < productList.size(); i++) {
+			if (productList.get(i).getId() == id) {
+				return i + 1; // add 1, to get the correct line in the comboBox
+			}
+		}
+		return 0;
 	}
 
 
-	@SuppressWarnings("unchecked")
-	protected void fetchDataFromDao() throws Exception {
+	protected void fetchDataFromDaos() throws Exception {
 		// get klanten en product data uit DB via Dao
 		klantList = controller.getModel().getGebruikerDao().getAllByType(GebruikerType.KLANT,true);
 		productList = controller.getModel().getProductDao().getAll();
 		
-		// use GebruikerController!
+		// genereer klant combo box List
 		klantOptions = controller.getGebruikerController().getKlantComboList(klantList);
-		@SuppressWarnings("rawtypes")
-		List<ArrayList> returnList = controller.getOrderController().convertProductToCombo(productList);
-		productOptions = returnList.get(0);
-		productPrijzen = returnList.get(1);
+	
+//		Object[]  objects = controller.getOrderController().convertProductToCombo(productList);
+//		productOptions = (List<String>)objects[0];
+//		productPrijzen =  (List<BigDecimal>) objects[1];
 
+		ListWrapper wrap = controller.getOrderController().convertProductToCombo(productList);
+		productOptions = wrap.getComboItems();
+		productPrijzen =  wrap.getPrijzen();
 	}
 
 	@Override
@@ -278,25 +290,27 @@ public class OrdersPanel extends GenericPanel {
 
 	}
 
-	private int getItemIndex(int id) {
-		for (int i = 0; i < productList.size(); i++) {
-			if (productList.get(i).getId() == id) {
-				return i + 1; // add 1, to get the correct line in the comboBox
-			}
-		}
-		return 0;
-	}
+	
+	
 
 	public BigDecimal SumSubtotalen() {
 
-		BigDecimal totaal = new BigDecimal(0.00);
+		BigDecimal totaal = new BigDecimal("0.00");
+		
 
 		for (SubOrderPanel sop : subOrderPanels) {
 			totaal = totaal.add(sop.getSubtotaal());
+//			BigDecimal cents = totaal.multiply(new BigDecimal(100));
+//			int ic= cents.ROUND_HALF_UP;
+//			totaal = new BigDecimal(ic);
+			totaal.setScale(2, BigDecimal.ROUND_HALF_UP);
 		}
 		totaalTextField.setText(totaal.toString());
 		return totaal;
 	}
+	
+	
+	// GETTERS
 
 	public List<Gebruiker> getKlantList() {
 		return klantList;
@@ -307,7 +321,6 @@ public class OrdersPanel extends GenericPanel {
 	}
 
 	public SubOrderPanel getSubOrderPanel(int index) {
-
 		return subOrderPanels[index];
 	}
 
@@ -316,9 +329,6 @@ public class OrdersPanel extends GenericPanel {
 		return klantList.get(index).getId();
 	}
 
-	public void setOrderList(List<Order> ordersList) {
-		this.ordersList = ordersList;
-	}
 
 	public Date getDate() {
 		return orderDate;

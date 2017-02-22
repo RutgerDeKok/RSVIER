@@ -27,9 +27,9 @@ public class SubOrderPanel extends JPanel {
 	private List<String> productOptions;
 	private List<BigDecimal> productPrijzen = new ArrayList<BigDecimal>();
 	private BigDecimal prijs;
-	private OrdersPanel orderPanel;
+	private OrderPanel orderPanel;
 
-	public SubOrderPanel(OrdersPanel orderPanel, List<String> productOptions, List<BigDecimal> productPrijzen) {
+	public SubOrderPanel(OrderPanel orderPanel, List<String> productOptions, List<BigDecimal> productPrijzen) {
 		this.orderPanel = orderPanel;
 		this.productOptions = productOptions;
 		this.productPrijzen = productPrijzen;
@@ -224,7 +224,7 @@ public class SubOrderPanel extends JPanel {
 	}
 
 	public BigDecimal getSubtotaal() {
-		return new BigDecimal(Double.parseDouble(subtotaalTextField.getText()));
+		return new BigDecimal(subtotaalTextField.getText());
 	}
 
 	public int getProductIndex() {

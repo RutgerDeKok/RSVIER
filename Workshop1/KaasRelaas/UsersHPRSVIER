@@ -1,0 +1,9 @@
+2017-02-12 013827 INFO  MainController94 - password ok
+2017-02-12 014125 INFO  MainController115 - failed login attempt by: Els
+2017-02-12 014158 INFO  MainController115 - failed login attempt by: Els
+2017-02-12 014407 INFO  MainController94 - logged in byid=8, type=MEDEWERKER, vn=Els, tv=van der, an=Pas 
+ straat=Kromstraat, nr=98, tvg=, pc=1234FG, plaats=Kwezel
+ phone=090-2345643 , toegang=BASIC, login=Els, pass=HfCM4zKSVUKzPleui4GOdA==$Z70yKlYRunY=
+
+2017-02-12 014745 INFO  MainController94 - logged in by8Elsvan derPas
+2017-02-12 015009 INFO  MainController94 - logged in by : 2 Rutger de Kok

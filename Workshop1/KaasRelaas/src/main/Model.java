@@ -1,55 +1,60 @@
 package main;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Properties;
-
-import gebruiker.Gebruiker;
-import gebruiker.GebruikerDao;
-import order.OrderDao;
-import order.Order;
-import product.Product;
-import product.ProductDao;
+import connection_pool.ConnectionPool;
+import gebruiker.daos.AbstractGebruikerDao;
+import gebruiker.daos.GebruikerDaoMock;
+import gebruiker.daos.GebruikerDaoMySql;
+import gebruiker.daos.GebruikerDaoSqlSrv;
+import order.daos.OrderDaoMySql;
+import order.daos.OrderDaoSqlSrv;
+import order.daos.AbstractOrderDao;
+import order.daos.OrderDaoMock;
+import product.daos.AbstractProductDao;
+import product.daos.ProductDaoMock;
+import product.daos.ProductDaoMySql;
+import product.daos.ProductDaoSqlSrv;
 
 public class Model {
+	
+//	public static final String DB_TYPE = "MySql";
+	public static final String DB_TYPE = "SqlServer";
+//	public static final String DB_TYPE = "Test";
 
-	private DaoInterface<Order> orderDao;
-	private DaoInterface<Product> productDao;
-	private DaoInterface<Gebruiker> gebruikerDao;
+	private AbstractOrderDao orderDao;
+	private AbstractProductDao productDao;
+	private AbstractGebruikerDao gebruikerDao;
 	private Connection myConn;
 
 	public void startConnection() {
+			
+			myConn = ConnectionPool.getInstance().getConnection();
+			
+			switch(DB_TYPE){
+			default:
+				break;
+			case "MySql":
+				KaasAppMain.logger.info("Database type = MySql");
+				orderDao = new OrderDaoMySql(this);
+				productDao = new ProductDaoMySql(myConn);
+				gebruikerDao = new GebruikerDaoMySql(myConn);
+				break;
+			case "SqlServer":
+				KaasAppMain.logger.info("Database type = SqlServer");
+				orderDao = new OrderDaoSqlSrv(this);
+				productDao = new ProductDaoSqlSrv(myConn);
+				gebruikerDao = new GebruikerDaoSqlSrv(myConn);
+				break;
+				
+			case "Test":
+				KaasAppMain.logger.info("Database type = Test");
+				orderDao = new OrderDaoMock();
+				productDao = new ProductDaoMock();
+				gebruikerDao = new GebruikerDaoMock();
+				break;
+			}
 
-		Properties props = new Properties();
-		props.setProperty("useSSL", "false");
-		props.setProperty("autoReconnect", "true");
-		try {
-			props.load(new FileInputStream("src/resources/database.access"));
-		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
-		String dburl = props.getProperty("dburl");
-		props.remove("dburl");
-
-		// connect to database
-		try {
-			myConn = DriverManager.getConnection(dburl, props);
-			orderDao = new OrderDao(this);
-			productDao = new ProductDao(myConn);
-			gebruikerDao = new GebruikerDao(myConn);
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
 	}
 
 	public void closeConnection() throws SQLException {
@@ -62,16 +67,16 @@ public class Model {
 
 	// getter and setters
 
-	public GebruikerDao getGebruikerDao() {
-		return (GebruikerDao)gebruikerDao;
+	public AbstractGebruikerDao getGebruikerDao() {
+		return gebruikerDao;
 	}
 
-	public ProductDao getProductDao() {
-		return (ProductDao) productDao;
+	public AbstractProductDao getProductDao() {
+		return  productDao;
 	}
 
-	public OrderDao getOrderDao() {
-		return (OrderDao) orderDao;
+	public AbstractOrderDao getOrderDao() {
+		return  orderDao;
 	}
 	
 	public Connection getConnection() {

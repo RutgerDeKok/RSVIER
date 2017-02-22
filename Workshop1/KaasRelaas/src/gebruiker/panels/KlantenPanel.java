@@ -1,12 +1,14 @@
-package gebruiker;
+package gebruiker.panels;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 
 import javax.swing.JLabel;
 
+import gebruiker.GebruikerCompleetAction;
+import gebruiker.GebruikerType;
 import main.MainController;
-import main.SimpleTablePanel;
+import main.panels.SimpleTablePanel;
 
 
 public class KlantenPanel extends AbstractGebruikerPanel {

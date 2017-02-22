@@ -1,4 +1,4 @@
-package gebruiker;
+package gebruiker.daos;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,14 +8,15 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import main.DaoInterface;
+import gebruiker.Gebruiker;
+import gebruiker.GebruikerType;
 
 
-public class GebruikerDao implements DaoInterface<Gebruiker>{
+public class GebruikerDaoMySql extends AbstractGebruikerDao{
 
 	private Connection myConn;
 
-	public GebruikerDao(Connection myConn) {
+	public GebruikerDaoMySql(Connection myConn) {
 		this.myConn = myConn;
 
 	}
@@ -67,27 +68,28 @@ public class GebruikerDao implements DaoInterface<Gebruiker>{
 
 	}
 
-	private Gebruiker convertRowToGebruiker(ResultSet myRs) throws SQLException {
-
-		Gebruiker tempGebruiker = new Gebruiker.GebruikerBuilder().id(myRs.getInt("gebruiker_id"))
-				.gebruikerType(GebruikerType.valueOf(myRs.getString("gebruiker_type")))
-				.voornaam(myRs.getString("gebruiker_voornaam")).tussenVoegsel(myRs.getString("gebruiker_tussenvoegsel"))
-				.achternaam(myRs.getString("gebruiker_achternaam")).straat(myRs.getString("gebruiker_straat"))
-				.huisNummer(myRs.getInt("gebruiker_huisnummer"))
-				.huisnrToevoeging(myRs.getString("gebruiker_hn_toevoeging"))
-				.postcode(myRs.getString("gebruiker_postcode")).woonplaats(myRs.getString("gebruiker_woonplaats"))
-				.phone(myRs.getString("gebruiker_telefoonnr"))
-				.gebruikerToegang(GebruikerToegang.valueOf(myRs.getString("gebruiker_toegang")))
-				.login(myRs.getString("gebruiker_login")).pass(myRs.getString("gebruiker_pass"))
-				.build();
-
-		return tempGebruiker;
-	}
+//	private Gebruiker convertRowToGebruiker(ResultSet myRs) throws SQLException {
+//
+//		Gebruiker tempGebruiker = new Gebruiker.GebruikerBuilder().id(myRs.getInt("gebruiker_id"))
+//				.gebruikerType(GebruikerType.valueOf(myRs.getString("gebruiker_type")))
+//				.voornaam(myRs.getString("gebruiker_voornaam")).tussenVoegsel(myRs.getString("gebruiker_tussenvoegsel"))
+//				.achternaam(myRs.getString("gebruiker_achternaam")).straat(myRs.getString("gebruiker_straat"))
+//				.huisNummer(myRs.getInt("gebruiker_huisnummer"))
+//				.huisnrToevoeging(myRs.getString("gebruiker_hn_toevoeging"))
+//				.postcode(myRs.getString("gebruiker_postcode")).woonplaats(myRs.getString("gebruiker_woonplaats"))
+//				.phone(myRs.getString("gebruiker_telefoonnr"))
+//				.gebruikerToegang(GebruikerToegang.valueOf(myRs.getString("gebruiker_toegang")))
+//				.login(myRs.getString("gebruiker_login")).pass(myRs.getString("gebruiker_pass"))
+//				.build();
+//
+//		return tempGebruiker;
+//	}
 
 	public Gebruiker getByLogin(String login) {
 		Gebruiker gebruiker = null;
 
 		try (Statement myStmt = myConn.createStatement();
+
 				ResultSet myRs = myStmt
 						.executeQuery("select * from gebruikers where gebruiker_login = \"" + login + "\"");) {
 
@@ -105,13 +107,6 @@ public class GebruikerDao implements DaoInterface<Gebruiker>{
 
 	}
 
-//	public void saveOrUpdate(Gebruiker gebruiker) {
-//		if (gebruiker.getId() == 0) {
-//			saveNew(gebruiker);
-//		} else {
-//			update(gebruiker);
-//		}
-//	}
 
 	public void update(Gebruiker gebruiker) {
 		try (PreparedStatement myStmt = myConn.prepareStatement("select * from gebruikers where gebruiker_id =?",
@@ -145,26 +140,26 @@ public class GebruikerDao implements DaoInterface<Gebruiker>{
 
 	}
 
-	private void gebruikerToResultSet(ResultSet myRs, Gebruiker gebruiker) throws SQLException {
-
-		// "gebruiker_id"
-		myRs.updateString("gebruiker_type", gebruiker.getGebruikerType().toString());
-		myRs.updateString("gebruiker_voornaam", gebruiker.getVoornaam());
-		myRs.updateString("gebruiker_tussenvoegsel", gebruiker.getTussenVoegsel());
-		myRs.updateString("gebruiker_achternaam", gebruiker.getAchternaam());
-		myRs.updateString("gebruiker_straat", gebruiker.getStraat());
-		myRs.updateInt("gebruiker_huisnummer", gebruiker.getHuisNummer());
-		myRs.updateString("gebruiker_hn_toevoeging", gebruiker.getHuisnrToevoeging());
-		myRs.updateString("gebruiker_postcode", gebruiker.getPostcode());
-		myRs.updateString("gebruiker_woonplaats", gebruiker.getWoonplaats());
-		myRs.updateString("gebruiker_telefoonnr", gebruiker.getTelefoon());
-		myRs.updateString("gebruiker_toegang", gebruiker.getGebruikerToegang().toString());
-		myRs.updateString("gebruiker_login", gebruiker.getLogin());
-		if (!(gebruiker.getPass() == null ||gebruiker.getPass().isEmpty())) {
-			myRs.updateString("gebruiker_pass", gebruiker.getPass());
-		}
-
-	}
+//	private void gebruikerToResultSet(ResultSet myRs, Gebruiker gebruiker) throws SQLException {
+//
+//		// "gebruiker_id"
+//		myRs.updateString("gebruiker_type", gebruiker.getGebruikerType().toString());
+//		myRs.updateString("gebruiker_voornaam", gebruiker.getVoornaam());
+//		myRs.updateString("gebruiker_tussenvoegsel", gebruiker.getTussenVoegsel());
+//		myRs.updateString("gebruiker_achternaam", gebruiker.getAchternaam());
+//		myRs.updateString("gebruiker_straat", gebruiker.getStraat());
+//		myRs.updateInt("gebruiker_huisnummer", gebruiker.getHuisNummer());
+//		myRs.updateString("gebruiker_hn_toevoeging", gebruiker.getHuisnrToevoeging());
+//		myRs.updateString("gebruiker_postcode", gebruiker.getPostcode());
+//		myRs.updateString("gebruiker_woonplaats", gebruiker.getWoonplaats());
+//		myRs.updateString("gebruiker_telefoonnr", gebruiker.getTelefoon());
+//		myRs.updateString("gebruiker_toegang", gebruiker.getGebruikerToegang().toString());
+//		myRs.updateString("gebruiker_login", gebruiker.getLogin());
+//		if (!(gebruiker.getPass() == null ||gebruiker.getPass().isEmpty())) {
+//			myRs.updateString("gebruiker_pass", gebruiker.getPass());
+//		}
+//
+//	}
 
 	@Override
 	public List<Gebruiker> getAll() {
@@ -185,10 +180,5 @@ public class GebruikerDao implements DaoInterface<Gebruiker>{
 	
 	}
 
-//	@Override
-	public void delete(int id) {
-		// TODO Auto-generated method stub
-		
-	}
 
 }

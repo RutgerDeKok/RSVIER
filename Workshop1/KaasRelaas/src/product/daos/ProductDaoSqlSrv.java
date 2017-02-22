@@ -1,4 +1,4 @@
-package product;
+package product.daos;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,15 +8,15 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import main.DaoInterface;
 import main.KaasAppMain;
+import product.Product;
 
 
-public class ProductDao implements DaoInterface<Product> {
+public class ProductDaoSqlSrv extends AbstractProductDao {
 
 	private Connection myConn;
 
-	public ProductDao(Connection myConn) {
+	public ProductDaoSqlSrv(Connection myConn) {
 		this.myConn = myConn;
 
 	}
@@ -54,14 +54,14 @@ public class ProductDao implements DaoInterface<Product> {
 
 	}
 
-	private Product convertRowToProduct(ResultSet myRs) throws SQLException {
-
-		Product tempProduct = new Product.ProductBuilder().productId(myRs.getInt("product_id"))
-				.productNaam(myRs.getString("product_naam")).prijs(myRs.getBigDecimal("product_prijs"))
-				.aantalVoorraad(myRs.getInt("product_op_voorraad")).build();
-
-		return tempProduct;
-	}
+//	private Product convertRowToProduct(ResultSet myRs) throws SQLException {
+//
+//		Product tempProduct = new Product.ProductBuilder().productId(myRs.getInt("product_id"))
+//				.productNaam(myRs.getString("product_naam")).prijs(myRs.getBigDecimal("product_prijs"))
+//				.aantalVoorraad(myRs.getInt("product_op_voorraad")).build();
+//
+//		return tempProduct;
+//	}
 
 	public void updateVoorraad(int prod_id, int prod_decrease) {
 		KaasAppMain.logger.debug(
@@ -137,21 +137,13 @@ public class ProductDao implements DaoInterface<Product> {
 		
 	}
 
-	private void productToResultSet(ResultSet myRs, Product product) throws SQLException {
-//		System.out.println("Running productToResultSet method from productDao, \r Needs to be implemented");
-		
-		myRs.updateString("product_naam", product.getNaam());
-		myRs.updateInt("product_op_voorraad", product.getAantalVoorraad());
-		myRs.updateBigDecimal("product_prijs", product.getPrijs());
-	}
+//	private void productToResultSet(ResultSet myRs, Product product) throws SQLException {
+//		
+//		myRs.updateString("product_naam", product.getNaam());
+//		myRs.updateInt("product_op_voorraad", product.getAantalVoorraad());
+//		myRs.updateBigDecimal("product_prijs", product.getPrijs());
+//	}
 
-	
-
-	@Override
-	public void delete(int id) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	
 
