@@ -17,10 +17,12 @@ import product.daos.ProductDaoMySql;
 import product.daos.ProductDaoSqlSrv;
 
 public class Model {
+	 
+//	public final static DatabaseType DB_TYPE = DatabaseType.MY_SQL;
+	public final static DatabaseType DB_TYPE = DatabaseType.SQL_SERVER;
+//	public final static DatabaseType DB_TYPE = DatabaseType.TEST;
 	
-//	public static final String DB_TYPE = "MySql";
-	public static final String DB_TYPE = "SqlServer";
-//	public static final String DB_TYPE = "Test";
+	
 
 	private AbstractOrderDao orderDao;
 	private AbstractProductDao productDao;
@@ -34,20 +36,20 @@ public class Model {
 			switch(DB_TYPE){
 			default:
 				break;
-			case "MySql":
+			case MY_SQL:
 				KaasAppMain.logger.info("Database type = MySql");
 				orderDao = new OrderDaoMySql(this);
 				productDao = new ProductDaoMySql(myConn);
 				gebruikerDao = new GebruikerDaoMySql(myConn);
 				break;
-			case "SqlServer":
+			case SQL_SERVER:
 				KaasAppMain.logger.info("Database type = SqlServer");
 				orderDao = new OrderDaoSqlSrv(this);
 				productDao = new ProductDaoSqlSrv(myConn);
 				gebruikerDao = new GebruikerDaoSqlSrv(myConn);
 				break;
 				
-			case "Test":
+			case TEST:
 				KaasAppMain.logger.info("Database type = Test");
 				orderDao = new OrderDaoMock();
 				productDao = new ProductDaoMock();
