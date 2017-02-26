@@ -1,8 +1,5 @@
 package main;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
@@ -12,44 +9,25 @@ import com.zaxxer.hikari.HikariDataSource;
 
 public class ConnectionPool {
 
-	private static final ConnectionPool instance = new ConnectionPool();
+	private static ConnectionPool instance;
+	private static Properties properties;
 
 	private HikariDataSource dataSource;
-
+	
 
 	private ConnectionPool() {
-		Properties props = new Properties();
-		try {
-			switch (Model.DB_TYPE) {
+			
+		setupPool();
 
-				case MY_SQL:
-					KaasAppMain.logger.info("Loading MySql config");
-					props.load(new FileInputStream("src/resources/MySql.access"));
-					setupPool(props);
-					break;
-				case SQL_SERVER:
-					KaasAppMain.logger.info("Loading SqlServer config");
-					props.load(new FileInputStream("src/resources/SqlServer.access"));
-					setupPool(props);
-					break;
-				default:
-					break;
-				}
-
-		} catch (FileNotFoundException e1) {
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
 	}
 
-	private void setupPool(Properties props) {
-		
+	private void setupPool() {
+			KaasAppMain.logger.info("setting CP config from Properties");
 			HikariConfig config = new HikariConfig();
 		
-			config.setJdbcUrl(props.getProperty("dburl"));
-			config.setUsername(props.getProperty("user"));
-			config.setPassword(props.getProperty("password"));
+			config.setJdbcUrl(properties.getProperty("dburl"));
+			config.setUsername(properties.getProperty("user"));
+			config.setPassword(properties.getProperty("password"));
 			
 			config.setMaximumPoolSize(10);
 			config.setAutoCommit(true);
@@ -60,6 +38,12 @@ public class ConnectionPool {
 			dataSource = new HikariDataSource(config);
 //			dataSource.setDriverClassName(props.getProperty("driver"));
 
+	}
+	
+	
+	public static void setProperties(Properties properties){
+		ConnectionPool.properties = properties;
+		
 	}
 
 	public Connection getConnection() {
@@ -88,6 +72,9 @@ public class ConnectionPool {
 	}
 
 	public static ConnectionPool getInstance() {
+		if(instance == null){
+			instance = new ConnectionPool();
+		}
 		return instance;
 	}
 

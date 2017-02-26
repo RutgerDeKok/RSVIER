@@ -17,6 +17,7 @@ public class Product {
 		this.aantalVoorraad = builder.getAantalVoorraad();
 	}
 	
+	// getters
 	public int getId() {
 		return productId;
 	}
