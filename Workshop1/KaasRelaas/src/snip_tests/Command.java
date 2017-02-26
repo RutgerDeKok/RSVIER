@@ -1,4 +1,4 @@
-package test;
+package snip_tests;
 import java.io.Serializable;
 
 public class Command implements Serializable{

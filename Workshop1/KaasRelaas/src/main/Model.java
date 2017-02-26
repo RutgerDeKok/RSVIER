@@ -2,7 +2,7 @@ package main;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import connection_pool.ConnectionPool;
+
 import gebruiker.daos.AbstractGebruikerDao;
 import gebruiker.daos.GebruikerDaoMock;
 import gebruiker.daos.GebruikerDaoMySql;
@@ -18,8 +18,8 @@ import product.daos.ProductDaoSqlSrv;
 
 public class Model {
 	 
-//	public final static DatabaseType DB_TYPE = DatabaseType.MY_SQL;
-	public final static DatabaseType DB_TYPE = DatabaseType.SQL_SERVER;
+	public final static DatabaseType DB_TYPE = DatabaseType.MY_SQL;
+//	public final static DatabaseType DB_TYPE = DatabaseType.SQL_SERVER;
 //	public final static DatabaseType DB_TYPE = DatabaseType.TEST;
 	
 	
@@ -32,6 +32,7 @@ public class Model {
 	public void startConnection() {
 			
 			myConn = ConnectionPool.getInstance().getConnection();
+			KaasAppMain.logger.info("ConnectionPool Instance = "+ConnectionPool.getInstance());
 			
 			switch(DB_TYPE){
 			default:

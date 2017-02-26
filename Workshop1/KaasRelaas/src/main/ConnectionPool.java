@@ -1,4 +1,4 @@
-package connection_pool;
+package main;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -9,9 +9,6 @@ import java.util.Properties;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-
-import main.KaasAppMain;
-import main.Model;
 
 public class ConnectionPool {
 
@@ -25,12 +22,12 @@ public class ConnectionPool {
 		try {
 			switch (Model.DB_TYPE) {
 
-				case "MySql":
+				case MY_SQL:
 					KaasAppMain.logger.info("Loading MySql config");
 					props.load(new FileInputStream("src/resources/MySql.access"));
 					setupPool(props);
 					break;
-				case "SqlServer":
+				case SQL_SERVER:
 					KaasAppMain.logger.info("Loading SqlServer config");
 					props.load(new FileInputStream("src/resources/SqlServer.access"));
 					setupPool(props);

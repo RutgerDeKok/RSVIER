@@ -10,11 +10,11 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import connection_pool.Password;
 import gebruiker.Gebruiker;
 import gebruiker.GebruikerType;
 import main.KaasAppMain;
 import main.MainController;
+import main.Password;
 
 
 public class LoginPanel extends JPanel {

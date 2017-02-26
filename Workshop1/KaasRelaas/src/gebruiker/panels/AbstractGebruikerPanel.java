@@ -18,12 +18,12 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import connection_pool.Password;
 import gebruiker.Gebruiker;
 import gebruiker.GebruikerToegang;
 import gebruiker.GebruikerType;
 import main.panels.GenericPanel;
 import main.KaasAppMain;
+import main.Password;
 
 
 public abstract class AbstractGebruikerPanel extends GenericPanel {

@@ -46,13 +46,11 @@ public class GebruikerCompleetAction {
 			
 		}
 		
+		// postcode
+		String postcode =gebrPanel.getPostcode().toUpperCase().replaceAll("\\s","");
+		if(!GebruikerValidator.checkPostcode(postcode))return;
 		
-		//check postcode
-		String postcode =(gebrPanel.getPostcode().toUpperCase().replaceAll("\\s",""));
-		if(!postcode.toString().matches("^\\d{4}[A-Z]{2}")){
-			KaasAppMain.logger.warn("postcode onjuist");
-			return;
-		}
+		
 		
 		// check vallues that may not be empty, 
 		String achternaam = gebrPanel.getAchternaam();
@@ -70,7 +68,7 @@ public class GebruikerCompleetAction {
 		}
 		
 		
-		
+		// build Gebruiker
 		Gebruiker tempGebruiker = new Gebruiker.GebruikerBuilder()
 				
 				.id 		(gebrPanel.getGebruikerId())
@@ -97,5 +95,7 @@ public class GebruikerCompleetAction {
 		controller.getView().getMainpanel().getKlantenPanel().updateAction();
 		
 	}
+
+
 
 }

@@ -7,9 +7,19 @@ public class KaasAppMain {
 	
 	public static final Logger logger = LoggerFactory.getLogger(MainController.class);	
 
-	@SuppressWarnings("unused")
+	
 	public static void main(String[] args) {
 		
+		KaasAppMain kap = new KaasAppMain();
+		kap.startNewConsole();
+		kap.startNewConsole();
+		kap.startNewConsole();
+		
+
+	}
+	
+	@SuppressWarnings("unused")
+	private void startNewConsole(){
 		View theView = new View();
     	Model theModel = new Model();
 	
@@ -21,7 +31,7 @@ public class KaasAppMain {
 		}
 		
         theView.setVisible(true);
-
+		
 	}
 
 }
